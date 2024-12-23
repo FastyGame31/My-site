@@ -19,5 +19,19 @@
             <a href="https://example.com" class="btn">Proceed</a> <!-- Button with redirect -->
         </div>
     </main>
+
+    <script>
+        // Function to check if the page was opened from the specific link
+        function checkReferrer() {
+            const expectedReferrer = "https://link-hub.net/114723/first-checkpoint";
+            // If the referrer is not the expected URL, redirect to the main page
+            if (document.referrer !== expectedReferrer) {
+                window.location.replace('https://www.sylphx.site'); // Redirect to the main page
+            }
+        }
+
+        // Call the function when the page loads
+        window.onload = checkReferrer;
+    </script>
 </body>
 </html>
