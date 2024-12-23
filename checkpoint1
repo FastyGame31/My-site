@@ -25,9 +25,5 @@
     <!-- Discord Button -->
     <button class="discord" onclick="window.open('https://discord.gg/G3HJZguW2w', '_blank')">Discord</button>
 
-    <!-- Optional: Additional Scripts (e.g., for analytics or tracking) -->
-    <script>
-        // You can add any additional JavaScript here if needed.
-    </script>
 </body>
 </html>
