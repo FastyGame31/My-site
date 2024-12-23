@@ -3,6 +3,10 @@
     {
       "source": "/checkpoint",
       "destination": "/checkpoint.html"
+    },
+    {
+      "source": "/checkpoint2",
+      "destination": "/checkpoint2.html"
     }
   ]
 }
