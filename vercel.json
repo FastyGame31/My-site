@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/checkpoint1",
-      "destination": "/checkpoint1.html", // Or wherever your checkpoint1 page is
+      "destination": "/checkpoint1.html", 
       "permanent": true
     }
   ]
