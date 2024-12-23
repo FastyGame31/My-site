@@ -21,17 +21,18 @@
     </main>
 
     <script>
-        // Function to check if the page was opened from the specific link
+        // Function to check if the page was opened from the specific Linkvertise URL
         function checkReferrer() {
-            const expectedReferrer = "https://link-hub.net/114723/first-checkpoint";
-            
-            // If the page is opened from the expected referrer, store a flag in sessionStorage
+            const expectedReferrer = "https://link-hub.net/114723/first-checkpoint"; // Linkvertise URL
+
+            // Check if the page was opened from Linkvertise (referrer might be unreliable in new tabs)
             if (document.referrer.startsWith(expectedReferrer)) {
-                sessionStorage.setItem('cameFromLinkvertise', 'true');
+                // Set a flag in localStorage to remember that the page was opened from the correct URL
+                localStorage.setItem('cameFromLinkvertise', 'true');
             }
 
-            // Check if the flag exists in sessionStorage, if not, redirect
-            if (!sessionStorage.getItem('cameFromLinkvertise')) {
+            // If the flag is not set, redirect the user to the main page
+            if (!localStorage.getItem('cameFromLinkvertise')) {
                 window.location.replace('https://www.sylphx.site'); // Redirect to the main page
             }
         }
