@@ -31,14 +31,6 @@
         if (!checkReferrer()) {
             window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
         }
-
-        // Timer to redirect after 3 minutes (180000 milliseconds)
-        const redirectTimer = setTimeout(function() {
-            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
-        }, 180000); // 3 minutes in milliseconds
-
-        // Optional: Reset the timer if the user clicks the "Proceed" button
-        const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', function() {
-            clearTimeout(redirectTimer); // Clear the redirect timer when proceeding
-        
+    </script>
+</body>
+</html>
