@@ -21,28 +21,19 @@
     </main>
 
     <script>
-        // Function to check if the page was opened from the specific Linkvertise URL
-        function checkReferrer() {
-            const expectedReferrer = "https://link-hub.net/114723/first-checkpoint"; // Linkvertise URL
-
-            // Check if the page was opened from Linkvertise (referrer might be unreliable in new tabs)
-            if (document.referrer.startsWith(expectedReferrer)) {
-                // Set a flag in localStorage to remember that the page was opened from the correct URL
-                localStorage.setItem('cameFromLinkvertise', 'true');
-            }
-
-            // If the flag is not set, redirect the user to the main page
-            if (!localStorage.getItem('cameFromLinkvertise')) {
-                window.location.replace('https://www.sylphx.site'); // Redirect to the main page
-            }
+        // Function to get the URL parameter
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
         }
 
-        // Call the function when the page loads
+        // Check if the page was opened from Linkvertise with the valid token
         window.onload = function() {
-            // Check if the page is coming from Linkvertise URL
-            if (!localStorage.getItem('cameFromLinkvertise')) {
-                // If not, redirect to the main page
-                window.location.replace('https://www.sylphx.site');
+            const token = getUrlParameter('token'); // Get the token from the URL
+
+            // If the token is missing or invalid, redirect to the main page
+            if (!token || token !== 'validToken') {
+                window.location.replace('https://www.sylphx.site'); // Redirect to the main page
             }
         };
     </script>
