@@ -38,7 +38,13 @@
         }
 
         // Call the function when the page loads
-        window.onload = checkReferrer;
+        window.onload = function() {
+            // Check if the page is coming from Linkvertise URL
+            if (!localStorage.getItem('cameFromLinkvertise')) {
+                // If not, redirect to the main page
+                window.location.replace('https://www.sylphx.site');
+            }
+        };
     </script>
 </body>
 </html>
