@@ -21,16 +21,29 @@
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
+        // Function to check if the URL contains the 'from=linkvertise' parameter
+        function checkURLParameter() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.has('from') && urlParams.get('from') === 'linkvertise';
         }
 
         // If the user didn't come from Linkvertise, redirect to the main page
-        if (!checkReferrer()) {
+        if (!checkURLParameter()) {
             window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
         }
+
+        // Timer to redirect after 3 minutes (180000 milliseconds)
+        setTimeout(function() {
+            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
+        }, 180000); // 3 minutes in milliseconds
+
+        // Optional: Reset the timer if the user clicks the "Proceed" button
+        const proceedButton = document.querySelector('.btn');
+        proceedButton.addEventListener('click', function() {
+            // If the user clicks the button, clear the timer and proceed
+            clearTimeout();
+            // You can proceed to the next checkpoint or other actions here
+        });
     </script>
 </body>
 </html>
