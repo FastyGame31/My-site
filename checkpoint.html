@@ -24,8 +24,14 @@
         // Function to check if the page was opened from the specific link
         function checkReferrer() {
             const expectedReferrer = "https://link-hub.net/114723/first-checkpoint";
-            // Check if the referrer starts with the expected URL (handling potential query parameters)
-            if (!document.referrer.startsWith(expectedReferrer)) {
+            
+            // If the page is opened from the expected referrer, store a flag in sessionStorage
+            if (document.referrer.startsWith(expectedReferrer)) {
+                sessionStorage.setItem('cameFromLinkvertise', 'true');
+            }
+
+            // Check if the flag exists in sessionStorage, if not, redirect
+            if (!sessionStorage.getItem('cameFromLinkvertise')) {
                 window.location.replace('https://www.sylphx.site'); // Redirect to the main page
             }
         }
