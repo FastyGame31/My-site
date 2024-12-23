@@ -2,15 +2,19 @@
   "rewrites": [
     {
       "source": "/checkpoint",
-      "destination": "/checkpoint.html"
+      "destination": "/checkpoint"
     },
     {
       "source": "/checkpoint2",
-      "destination": "/checkpoint2.html"
+      "destination": "/checkpoint2"
     },
     {
       "source": "/checkpoint3",
-      "destination": "/checkpoint3.html"
+      "destination": "/checkpoint3"
+    },
+    {
+      "source": "/getkey",
+      "destination": "/getkey"
     }
   ]
 }
