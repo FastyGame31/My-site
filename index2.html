@@ -1,0 +1,37 @@
+<script>
+    // Function to check if the user came from the Linkvertise URL
+    function checkReferrer() {
+        const linkvertiseUrl = "https://linkvertise.com/114723/first-checkpoint?o=sharing"; // Linkvertise URL
+
+        // Check if the referrer is the specific Linkvertise URL or if sessionStorage is set
+        if (document.referrer.startsWith(linkvertiseUrl) || sessionStorage.getItem('cameFromLinkvertise')) {
+            return true;
+        }
+
+        // If not from Linkvertise, return false
+        return false;
+    }
+
+    // If not from the Linkvertise link, redirect to the main page
+    if (!checkReferrer()) {
+        window.location.replace('https://www.sylphx.site');
+    }
+
+    // Timer to redirect after 5 minutes (300 seconds)
+    setTimeout(function() {
+        window.location.replace('https://www.sylphx.site'); // Force redirect to the main page
+    }, 300000); // 5 minutes in milliseconds
+
+    // Store the referrer in sessionStorage if the user is coming from Linkvertise
+    window.onload = function() {
+        if (document.referrer.startsWith("https://linkvertise.com/114723/first-checkpoint?o=sharing")) {
+            sessionStorage.setItem('cameFromLinkvertise', 'true');
+        }
+    };
+
+    // Ensure redirect even if the user refreshes or navigates away
+    window.addEventListener('beforeunload', function(event) {
+        event.preventDefault(); // Cancel the default action
+        window.location.replace('https://www.sylphx.site'); // Force redirect
+    });
+</script>
