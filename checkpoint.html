@@ -6,7 +6,7 @@
     <title>Checkpoint</title>
     <link rel="stylesheet" href="checkpoint.css"> <!-- Link to the checkpoint CSS -->
 </head>
-<body class="checkpoint-page"> <!-- Added the checkpoint-page class here -->
+<body class="checkpoint-page">
     <header class="header">
         <h1>Sylph X</h1> <!-- Changed to normal case -->
         <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
@@ -21,21 +21,16 @@
     </main>
 
     <script>
-        // Function to get the URL parameter
-        function getUrlParameter(name) {
+        // Function to check if the URL contains the 'from=linkvertise' parameter
+        function checkURLParameter() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
+            return urlParams.has('from') && urlParams.get('from') === 'linkvertise';
         }
 
-        // Check if the page was opened from Linkvertise with the valid token
-        window.onload = function() {
-            const token = getUrlParameter('token'); // Get the token from the URL
-
-            // If the token is missing or invalid, redirect to the main page
-            if (!token || token !== 'validToken') {
-                window.location.replace('https://www.sylphx.site'); // Redirect to the main page
-            }
-        };
+        // If the user didn't come from Linkvertise, redirect to the main page
+        if (!checkURLParameter()) {
+            window.location.replace('https://www.sylphx.site');
+        }
     </script>
 </body>
 </html>
