@@ -12,9 +12,12 @@
         return false;
     }
 
-    // If not from the Linkvertise link, redirect to the main page
+    // If the user is not coming from Linkvertise, redirect to the main page
     if (!checkReferrer()) {
         window.location.replace('https://www.sylphx.site');
+    } else {
+        // If the user came from Linkvertise, redirect to the checkpoint page
+        window.location.replace('https://sylphx.site/checkpoint1');
     }
 
     // Timer to redirect after 5 minutes (300 seconds)
