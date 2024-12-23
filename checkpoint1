@@ -1,39 +1,33 @@
-<script>
-    // Function to check if the user came from the Linkvertise URL
-    function checkReferrer() {
-        const linkvertiseUrl = "https://linkvertise.com/114723/first-checkpoint?o=sharing"; // Linkvertise URL
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkpoint 1</title>
+    <link rel="stylesheet" href="styles2.css"> <!-- Link to your styles for the checkpoint page -->
+</head>
+<body class="key-system">
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Checkpoint 1</h1>
+        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo">
+    </div>
+    
+    <!-- Checkpoint Panel -->
+    <div class="checkpoint-panel">
+        <h2>Welcome to Checkpoint 1</h2>
+        <p>This is where you can get your key after completing the Linkvertise process.</p>
+        
+        <!-- Button to get key (replace the URL with the actual link to your key system) -->
+        <a href="https://example.com/your-key" class="btn" target="_blank">Get Key</a>
+    </div>
+    
+    <!-- Discord Button -->
+    <button class="discord" onclick="window.open('https://discord.gg/G3HJZguW2w', '_blank')">Discord</button>
 
-        // Check if the referrer is the specific Linkvertise URL or if sessionStorage is set
-        if (document.referrer.startsWith(linkvertiseUrl) || sessionStorage.getItem('cameFromLinkvertise')) {
-            return true;
-        }
-
-        // If not from Linkvertise, return false
-        return false;
-    }
-
-    // If the user is not coming from Linkvertise, redirect to the main page
-    if (!checkReferrer()) {
-        window.location.replace('https://www.sylphx.site');
-    } else {
-        // If the user came from Linkvertise, redirect to the checkpoint page
-        window.location.replace('https://sylphx.site/checkpoint1');
-    }
-    // Timer to redirect after 5 minutes (300 seconds)
-    setTimeout(function() {
-        window.location.replace('https://www.sylphx.site'); // Force redirect to the main page
-    }, 300000); // 5 minutes in milliseconds
-
-    // Store the referrer in sessionStorage if the user is coming from Linkvertise
-    window.onload = function() {
-        if (document.referrer.startsWith("https://linkvertise.com/114723/first-checkpoint?o=sharing")) {
-            sessionStorage.setItem('cameFromLinkvertise', 'true');
-        }
-    };
-
-    // Ensure redirect even if the user refreshes or navigates away
-    window.addEventListener('beforeunload', function(event) {
-        event.preventDefault(); // Cancel the default action
-        window.location.replace('https://www.sylphx.site'); // Force redirect
-    });
-</script>
+    <!-- Optional: Additional Scripts (e.g., for analytics or tracking) -->
+    <script>
+        // You can add any additional JavaScript here if needed.
+    </script>
+</body>
+</html>
