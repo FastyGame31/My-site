@@ -1,9 +1,8 @@
 {
-  "redirects": [
+  "rewrites": [
     {
       "source": "/checkpoint1",
-      "destination": "/checkpoint1.html",
-      "permanent": true
+      "destination": "/checkpoint1.html"
     }
   ]
 }
