@@ -1,48 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkpoint 3</title>
-    <link rel="stylesheet" href="checkpoint3.css"> <!-- Link to the checkpoint3 CSS -->
-</head>
-<body class="checkpoint-page">
-    <header class="header">
-        <h1>Sylph X</h1> <!-- Changed to normal case -->
-        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
-    </header>
-    
-    <main>
-        <div class="checkpoint-panel">
-            <h2>Checkpoint 3</h2> <!-- Updated to Checkpoint 3 -->
-            <p>This is the third checkpoint page. No redirection will occur now.</p>
-            <a href="https://example.com" class="btn">Proceed</a> <!-- Button with redirect -->
-        </div>
-    </main>
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-    <script>
-        // Function to check if the user came from Linkvertise
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
-        }
+/* Checkpoint Page Styles */
+body.checkpoint-page {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
 
-        // If the user didn't come from Linkvertise, redirect to the main page
-        if (!checkReferrer()) {
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
-        }
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        // Timer to redirect after 3 minutes (180000 milliseconds)
-        const redirectTimer = setTimeout(function() {
-            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
-        }, 180000); // 3 minutes in milliseconds
+/* Header Section */
+.checkpoint-page .header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
 
-        // Optional: Reset the timer if the user clicks the "Proceed" button
-        const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', function() {
-            clearTimeout(redirectTimer); // Clear the redirect timer when proceeding
-            // You can add actions here for the next checkpoint
-        });
-    </script>
-</body>
-</html>
+.checkpoint-page .header h1 {
+    font-size: 2.5rem;
+    font-weight: normal; /* Normal weight for Sylph X */
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; /* Ensure Arial font */
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+.checkpoint-page .header .logo {
+    width: 100px; /* Adjust logo size */
+    height: auto;
+    margin-bottom: 20px; /* Add space between logo and header */
+    filter: brightness(0) invert(1); /* Makes the black logo visible */
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel */
+.checkpoint-page .checkpoint-panel {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark gray background */
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel Title */
+.checkpoint-page .checkpoint-panel h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 20px; /* Increased space below title */
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel Description */
+.checkpoint-page .checkpoint-panel p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 30px; /* Increased space below description */
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Button Styling */
+.checkpoint-page .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 20px 40px; /* Increased padding for bigger button */
+    font-size: 1.5rem; /* Bigger font size */
+    color: #fff;
+    background-color: #444;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+.checkpoint-page .btn:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Global Styles for Main Page and Checkpoint */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+h1, h2 {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+button {
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #444;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #555;
+}
