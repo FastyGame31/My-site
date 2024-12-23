@@ -21,15 +21,15 @@
     </main>
 
     <script>
-        // Function to check if the URL contains the 'from=linkvertise' parameter
-        function checkURLParameter() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.has('from') && urlParams.get('from') === 'linkvertise';
+        // Function to check if the user came from Linkvertise
+        function checkReferrer() {
+            const referrer = document.referrer.toLowerCase();
+            return referrer.includes('linkvertise.com');
         }
 
         // If the user didn't come from Linkvertise, redirect to the main page
-        if (!checkURLParameter()) {
-            window.location.replace('https://www.sylphx.site');
+        if (!checkReferrer()) {
+            window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
         }
     </script>
 </body>
