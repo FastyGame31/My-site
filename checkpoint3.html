@@ -15,7 +15,7 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Checkpoint 3</h2> <!-- Updated to Checkpoint 3 -->
-            <p>This is the third checkpoint page. No redirection will occur now.</p>
+            <p>This is the third checkpoint page. Complete the task on Linkvertise to proceed.</p>
             <a href="https://example.com" class="btn">Proceed</a> <!-- Button with redirect -->
         </div>
     </main>
@@ -27,23 +27,43 @@
             return referrer.includes('linkvertise.com');
         }
 
-        // If the user didn't come from Linkvertise, redirect to the main page
-        if (!checkReferrer()) {
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
+        // Function to check if Checkpoint 2 was completed
+        function checkProgress() {
+            const progress = JSON.parse(localStorage.getItem('progress')) || [];
+            return progress.includes(2); // Ensure Checkpoint 2 is marked as completed
         }
 
-        // Timer to redirect after 3 minutes (180000 milliseconds)
+        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 2
+        if (!checkReferrer() || !checkProgress()) {
+            alert('You must complete Checkpoint 2 and the Linkvertise task to access this page.');
+            window.location.replace('https://www.sylphx.site'); // Redirect to main page
+        }
+
+        // Store progress in localStorage
+        function markCheckpointCompleted() {
+            const progress = JSON.parse(localStorage.getItem('progress')) || [];
+            if (!progress.includes(3)) {
+                progress.push(3); // Mark Checkpoint 3 as completed
+                localStorage.setItem('progress', JSON.stringify(progress));
+            }
+        }
+
+        // Add event listener to the Proceed button
+        const proceedButton = document.querySelector('.btn');
+        proceedButton.addEventListener('click', function(event) {
+            // Check if the user came from Linkvertise before proceeding
+            if (checkReferrer()) {
+                markCheckpointCompleted(); // Mark Checkpoint 3 as completed
+            } else {
+                event.preventDefault(); // Prevent navigation
+                alert('You must complete the task on Linkvertise to proceed.');
+            }
+        });
+
+        // Optional: Timer to redirect after 3 minutes (180000 milliseconds)
         const redirectTimer = setTimeout(function() {
             window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
         }, 180000); // 3 minutes in milliseconds
-
-        // Optional: Reset the timer if the user clicks the "Proceed" button
-        const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', function() {
-            clearTimeout(redirectTimer); // Clear the redirect timer when proceeding
-            // You can add actions here for the next checkpoint
-        });
     </script>
 </body>
 </html>
-
