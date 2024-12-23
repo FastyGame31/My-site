@@ -24,8 +24,8 @@
         // Function to check if the page was opened from the specific link
         function checkReferrer() {
             const expectedReferrer = "https://link-hub.net/114723/first-checkpoint";
-            // If the referrer is not the expected URL, redirect to the main page
-            if (document.referrer !== expectedReferrer) {
+            // Check if the referrer starts with the expected URL (handling potential query parameters)
+            if (!document.referrer.startsWith(expectedReferrer)) {
                 window.location.replace('https://www.sylphx.site'); // Redirect to the main page
             }
         }
