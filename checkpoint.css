@@ -41,16 +41,18 @@ body.checkpoint-page {
 }
 
 .checkpoint-page .header h1 {
-    font-size: 3rem;
-    font-weight: bold;
+    font-size: 2.5rem;
+    font-weight: normal; /* Normal weight for Sylph X */
     color: #fff;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; /* Ensure Arial font */
     animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
 }
 
 .checkpoint-page .header .logo {
     width: 100px; /* Adjust logo size */
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Add space between logo and header */
     filter: brightness(0) invert(1); /* Makes the black logo visible */
     animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
 }
@@ -72,7 +74,7 @@ body.checkpoint-page {
 .checkpoint-page .checkpoint-panel h2 {
     font-size: 2rem;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Increased space below title */
     animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
 }
 
@@ -80,7 +82,7 @@ body.checkpoint-page {
 .checkpoint-page .checkpoint-panel p {
     font-size: 1.2rem;
     color: #ccc;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increased space below description */
     animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
 }
 
@@ -88,8 +90,8 @@ body.checkpoint-page {
 .checkpoint-page .btn {
     display: inline-block;
     margin-top: 20px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
+    padding: 20px 40px; /* Increased padding for bigger button */
+    font-size: 1.5rem; /* Bigger font size */
     color: #fff;
     background-color: #444;
     border: 2px solid #fff;
