@@ -1,8 +1,8 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/checkpoint1",
-      "destination": "/checkpoint1.html"
+      "src": "/checkpoint1",
+      "dest": "/checkpoint1.html"
     }
   ]
 }
