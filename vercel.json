@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/checkpoint1.html",
-      "destination": "/checkpoint1"
+      "source": "/checkpoint1",
+      "destination": "/checkpoint1.html"
     }
   ]
 }
