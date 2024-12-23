@@ -1,10 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/index2.html",
-      "destination": "/checkpoint1",
+      "source": "/checkpoint1",
+      "destination": "/checkpoint1.html", // Or wherever your checkpoint1 page is
       "permanent": true
     }
   ]
 }
-
