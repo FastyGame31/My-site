@@ -4,44 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Key</title>
-    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+    <link rel="stylesheet" href="getkey.css"> 
 </head>
 <body class="checkpoint-page">
     <header class="header">
-        <h1>Sylph X</h1> <!-- Normal case for Sylph X -->
-        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
+        <h1>Sylph X</h1> 
+        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> 
     </header>
     
     <main>
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
             <p>Complete the task on Linkvertise to retrieve your key and proceed.</p>
-            <a href="https://example.com" class="btn">Get Key</a> <!-- Redirect button -->
+            <a href="https://example.com" class="btn">Get Key</a> 
         </div>
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
+
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
             return referrer.includes('linkvertise.com');
         }
 
-        // Function to check if Checkpoint 3 was completed
+
         function checkProgress() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(3); // Ensure Checkpoint 3 is marked as completed
+            return progress.includes(3); 
         }
 
-        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 3
+
         if (!checkReferrer() || !checkProgress()) {
             alert('You must complete Checkpoint 3 and the Linkvertise task to access this page.');
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page
+            window.location.replace('https://www.sylphx.site'); 
         }
 
-        // Store progress in localStorage for Get Key
+
         function markGetKeyCompleted() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
             if (!progress.includes('getkey')) {
-                progress.push('getkey'); // Mark Get Key as
-
+                progress.push('getkey'); 
