@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkpoint 3</title>
+    <link rel="stylesheet" href="checkpoint3.css"> <!-- Link to the checkpoint3 CSS -->
+</head>
+<body class="checkpoint-page">
+    <header class="header">
+        <h1>Sylph X</h1> <!-- Changed to normal case -->
+        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
+    </header>
+    
+    <main>
+        <div class="checkpoint-panel">
+            <h2>Checkpoint 3</h2> <!-- Updated to Checkpoint 3 -->
+            <p>This is the third checkpoint page. No redirection will occur now.</p>
+            <a href="https://example.com" class="btn">Proceed</a> <!-- Button with redirect -->
+        </div>
+    </main>
+
+    <script>
+        // Function to check if the user came from Linkvertise
+        function checkReferrer() {
+            const referrer = document.referrer.toLowerCase();
+            return referrer.includes('linkvertise.com');
+        }
+
+        // If the user didn't come from Linkvertise, redirect to the main page
+        if (!checkReferrer()) {
+            window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
+        }
+
+        // Timer to redirect after 3 minutes (180000 milliseconds)
+        const redirectTimer = setTimeout(function() {
+            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
+        }, 180000); // 3 minutes in milliseconds
+
+        // Optional: Reset the timer if the user clicks the "Proceed" button
+        const proceedButton = document.querySelector('.btn');
+        proceedButton.addEventListener('click', function() {
+            clearTimeout(redirectTimer); // Clear the redirect timer when proceeding
+            // You can add actions here for the next checkpoint
+        });
+    </script>
+</body>
+</html>
 
