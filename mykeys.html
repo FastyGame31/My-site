@@ -16,5 +16,26 @@
             <!-- Generated keys will appear here -->
         </ul>
     </main>
+
+    <script>
+        // Function to load keys from localStorage and display them
+        function loadKeys() {
+            const keys = JSON.parse(localStorage.getItem('keys')) || [];
+            const myKeysList = document.getElementById('myKeysList');
+            
+            // Clear the list before adding new keys
+            myKeysList.innerHTML = '';
+
+            // Add each key to the list
+            keys.forEach(key => {
+                const listItem = document.createElement('li');
+                listItem.innerText = key;
+                myKeysList.appendChild(listItem);
+            });
+        }
+
+        // Call the loadKeys function when the page loads
+        loadKeys();
+    </script>
 </body>
 </html>
