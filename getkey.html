@@ -77,10 +77,8 @@
                     timestamp: new Date().toISOString()
                 });
                 console.log('Key successfully saved to Firebase');
-                alert(`Your key has been saved to Firebase: ${key}`);
             } catch (error) {
                 console.error('Error saving key to Firebase:', error);
-                alert('An error occurred while saving the key. Please try again later.');
             }
         }
 
@@ -90,7 +88,7 @@
         async function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
-                document.getElementById('status-label').innerText = `Your generated key: ${key}`;
+                document.getElementById('status-label').innerText = `Your generated key: ${key}`; // Update the label text
 
                 // Save the key to Firebase
                 await saveKeyToFirebase(key);
