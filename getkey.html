@@ -27,11 +27,11 @@
             return referrer.includes('linkvertise.com');
         }
 
-        // Redirect to a different page if not coming from Linkvertise
+        // Redirect back to sylphx.site if not coming from Linkvertise
         function redirectIfNotFromLinkvertise() {
             if (!checkReferrer()) {
-                // Redirect to a page explaining the task (you can create a page like 'linkvertise_error.html')
-                window.location.href = 'sylphx.site'; // Replace with your error page URL
+                alert("You haven't completed checkpoints to generate a key.");
+                window.location.href = 'https://sylphx.site'; // Redirect back to your main site
             }
         }
 
