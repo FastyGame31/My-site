@@ -11,7 +11,7 @@
     {
       "source": "/checkpoint3",
       "destination": "/checkpoint3.html"
-    }
+    },
     {
       "source": "/getkey",
       "destination": "/getkey.html"
