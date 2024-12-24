@@ -40,28 +40,23 @@
             return result;
         }
 
-        // Function to get the user's public IP address using ipify API
-        function getIP() {
-            return fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => data.ip);
-        }
-
         // Function to handle key generation and saving
-        async function handleKeyGeneration() {
+        function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
-                const ip = await getIP(); // Get the user's IP address
+                const sessionID = sessionStorage.getItem('sessionID') || Date.now(); // Generate a unique session ID
+                sessionStorage.setItem('sessionID', sessionID); // Store session ID
+
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${key}`;
 
-                // Store the generated key and IP in localStorage
-                let keys = JSON.parse(localStorage.getItem('keys')) || [];
-                keys.push({ key: key, ip: ip });
-                localStorage.setItem('keys', JSON.stringify(keys));
+                // Store the generated key and session ID in sessionStorage
+                let keys = JSON.parse(sessionStorage.getItem('keys')) || [];
+                keys.push({ key: key, sessionID: sessionID });
+                sessionStorage.setItem('keys', JSON.stringify(keys));
 
                 // Debugging: Log the keys to check if they are stored
-                console.log('Stored Keys:', JSON.parse(localStorage.getItem('keys')));
+                console.log('Stored Keys:', JSON.parse(sessionStorage.getItem('keys')));
 
                 // Copy the key to clipboard
                 navigator.clipboard.writeText(key).then(() => {
