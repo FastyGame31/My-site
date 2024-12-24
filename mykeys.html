@@ -18,20 +18,32 @@
     </main>
 
     <script>
-        // Function to load keys from localStorage and display them
+        // Function to load keys from localStorage and display them based on HWID
         function loadKeys() {
+            const hwid = generateHWID(); // Get the HWID for the current user
             const keys = JSON.parse(localStorage.getItem('keys')) || [];
             const myKeysList = document.getElementById('myKeysList');
             
             // Clear the list before adding new keys
             myKeysList.innerHTML = '';
 
-            // Add each key to the list
-            keys.forEach(key => {
-                const listItem = document.createElement('li');
-                listItem.innerText = key;
-                myKeysList.appendChild(listItem);
+            // Add each key that matches the current HWID to the list
+            keys.forEach(item => {
+                if (item.hwid === hwid) {
+                    const listItem = document.createElement('li');
+                    listItem.innerText = item.key;
+                    myKeysList.appendChild(listItem);
+                }
             });
+        }
+
+        // Function to generate a unique HWID based on browser properties
+        function generateHWID() {
+            const userAgent = navigator.userAgent;
+            const screenWidth = screen.width;
+            const screenHeight = screen.height;
+            const time = new Date().getTime();
+            return userAgent + "-" + screenWidth + "x" + screenHeight + "-" + time;
         }
 
         // Call the loadKeys function when the page loads
