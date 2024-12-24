@@ -17,6 +17,10 @@
             <h2>Get Key</h2>
             <p id="status-label">Complete the task on Linkvertise to retrieve your key and proceed.</p>
             <button class="btn" id="generateKeyBtn">Generate Key</button>
+            <div id="keyDisplay" style="display: none;">
+                <p>Your generated key: <span id="generatedKey"></span></p>
+                <button id="copyKeyBtn">Copy to Clipboard</button>
+            </div>
         </div>
     </main>
 
@@ -40,59 +44,24 @@
             return result;
         }
 
-        // Function to save the generated key to GitHub
-        async function saveKeyToGitHub(key) {
-            const token = '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'; // Your GitHub token
-            const repo = 'my-site'; // Your repository name
-            const filePath = 'literal-keys.json'; // Path to the JSON file
-            const apiUrl = `https://api.github.com/repos/FastyGame31/${repo}/contents/${filePath}`;
-            
-            // Fetch current content of the file
-            const response = await fetch(apiUrl, {
-                headers: {
-                    Authorization: `token ${token}`
-                }
-            });
-            const data = await response.json();
-            const sha = data.sha;
-
-            // Get the current keys from the file and add the new key
-            const currentKeys = JSON.parse(atob(data.content)).keys || [];
-            currentKeys.push(key);
-
-            // Encode the updated keys
-            const updatedContent = btoa(JSON.stringify({ keys: currentKeys }));
-
-            // Update the file on GitHub
-            await fetch(apiUrl, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Add new key',
-                    content: updatedContent,
-                    sha: sha
-                })
-            });
-        }
-
-        // Function to handle key generation and saving
+        // Function to handle key generation and display
         function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
                 document.getElementById('status-label').innerText = `Your generated key: ${key}`;
 
-                // Save the key to GitHub
-                saveKeyToGitHub(key);
-
-                // Store in sessionStorage to allow only one key per session
+                // Store the key in sessionStorage to allow only one key per session
                 sessionStorage.setItem('generatedKey', key);
 
-                // Copy the key to clipboard
-                navigator.clipboard.writeText(key).then(() => {
-                    alert('Key copied to clipboard!');
+                // Display the generated key and show the "Copy to Clipboard" button
+                document.getElementById('generatedKey').innerText = key;
+                document.getElementById('keyDisplay').style.display = 'block';
+
+                // Handle the copy to clipboard functionality
+                document.getElementById('copyKeyBtn').addEventListener('click', function() {
+                    navigator.clipboard.writeText(key).then(() => {
+                        alert('Key copied to clipboard!');
+                    });
                 });
             } else {
                 alert('You must complete the task on Linkvertise to retrieve your key.');
