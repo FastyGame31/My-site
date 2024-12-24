@@ -27,6 +27,9 @@
             // Clear the list before adding new keys
             myKeysList.innerHTML = '';
 
+            // Debugging: Log the keys to check if they are being retrieved correctly
+            console.log('Loaded Keys:', keys);
+
             // Add each key that matches the current HWID to the list
             keys.forEach(item => {
                 if (item.hwid === hwid) {
