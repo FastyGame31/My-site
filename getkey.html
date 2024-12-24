@@ -15,7 +15,7 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
-            <p>Complete the task on Linkvertise to retrieve your key and proceed.</p>
+            <p id="status-label">Complete the task on Linkvertise to retrieve your key and proceed.</p>
             <a href="https://example.com" class="btn">Get Key</a> <!-- Redirect button -->
         </div>
     </main>
@@ -33,40 +33,81 @@
             return progress.includes(2); // Check if Checkpoint 2 is marked as completed
         }
 
-        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 2
-        if (!checkReferrer() || !checkProgress()) {
-            alert('You must complete Checkpoint 2 and the Linkvertise task to access this page.');
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page
+        // Function to generate a random key
+        function generateKey() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = 'sylphx1day-';
+            for (let i = 0; i < 25; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+                if (i % 5 === 4 && i !== 24) {
+                    result += '-'; // Add dash after every 5 characters
+                }
+            }
+            return result;
         }
 
-        // Remove Checkpoint 2 progress and mark Get Key as completed
-        function markGetKeyCompleted() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
+        // Function to save the generated key to GitHub
+        async function saveKeyToGitHub(key) {
+            const token = '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'; // Your GitHub token
+            const repo = 'my-site'; // Your repository name
+            const filePath = 'literal-keys.json'; // Path to the JSON file
+            const apiUrl = `https://api.github.com/repos/USERNAME/${repo}/contents/${filePath}`;
             
-            // Remove Checkpoint 2 progress
-            const checkpoint2Index = progress.indexOf(2);
-            if (checkpoint2Index !== -1) {
-                progress.splice(checkpoint2Index, 1);
+            // Fetch current content of the file
+            const response = await fetch(apiUrl, {
+                headers: {
+                    Authorization: `token ${token}`
+                }
+            });
+            const data = await response.json();
+            const sha = data.sha;
+
+            // Get the current keys from the file and add the new key
+            const currentKeys = JSON.parse(atob(data.content)).keys || [];
+            currentKeys.push(key);
+
+            // Encode the updated keys
+            const updatedContent = btoa(JSON.stringify({ keys: currentKeys }));
+
+            // Update the file on GitHub
+            await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Add new key',
+                    content: updatedContent,
+                    sha: sha
+                })
+            });
+        }
+
+        // Function to handle key generation and saving
+        function handleKeyGeneration() {
+            if (checkReferrer() && checkProgress()) {
+                const key = generateKey();
+                document.getElementById('status-label').innerText = `Your generated key: ${key}`;
+
+                // Save the key to GitHub
+                saveKeyToGitHub(key);
+
+                // Store in localStorage to prevent re-generation
+                localStorage.setItem('generatedKey', key);
+            } else {
+                alert('You must complete the task on Linkvertise to retrieve your key.');
             }
-            
-            // Mark Get Key as completed
-            if (!progress.includes('getkey')) {
-                progress.push('getkey');
-            }
-            
-            localStorage.setItem('progress', JSON.stringify(progress));
         }
 
         // Add event listener to the Get Key button
         const getKeyButton = document.querySelector('.btn');
         getKeyButton.addEventListener('click', function(event) {
-            // Check if the user came from Linkvertise before proceeding
-            if (checkReferrer()) {
-                markGetKeyCompleted(); // Mark Get Key as completed and remove Checkpoint 2 progress
-            } else {
-                event.preventDefault(); // Prevent navigation
-                alert('You must complete the task on Linkvertise to retrieve your key.');
+            if (localStorage.getItem('generatedKey')) {
+                alert('You have already generated a key.');
+                return;
             }
+            handleKeyGeneration();
         });
     </script>
 </body>
