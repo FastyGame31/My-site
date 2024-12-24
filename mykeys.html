@@ -18,10 +18,17 @@
     </main>
 
     <script>
-        // Function to load keys from sessionStorage and display them based on session
-        function loadKeys() {
-            const sessionID = sessionStorage.getItem('sessionID');
-            const keys = JSON.parse(sessionStorage.getItem('keys')) || [];
+        // Function to get the user's public IP address using ipify API
+        function getIP() {
+            return fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => data.ip);
+        }
+
+        // Function to load keys from localStorage and display them based on IP
+        async function loadKeys() {
+            const ip = await getIP(); // Get the user's IP address
+            const keys = JSON.parse(localStorage.getItem('keys')) || [];
             const myKeysList = document.getElementById('myKeysList');
             
             // Clear the list before adding new keys
@@ -30,9 +37,9 @@
             // Debugging: Log the keys to check if they are being retrieved correctly
             console.log('Loaded Keys:', keys);
 
-            // Add each key that matches the current session ID to the list
+            // Add each key that matches the current IP to the list
             keys.forEach(item => {
-                if (item.sessionID === sessionID) {
+                if (item.ip === ip) {
                     const listItem = document.createElement('li');
                     listItem.innerText = item.key;
                     myKeysList.appendChild(listItem);
