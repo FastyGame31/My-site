@@ -21,10 +21,10 @@
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
+        // Function to check if the user came from the specific checkpoint page
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
+            return referrer.includes('sylphx.site/checkpoint3');
         }
 
         // Function to check if Checkpoint 3 was completed
@@ -33,9 +33,9 @@
             return progress.includes(3); // Ensure Checkpoint 3 is marked as completed
         }
 
-        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 3
+        // Redirect to the main page if the user didn't come from the checkpoint page or skip Checkpoint 3
         if (!checkReferrer() || !checkProgress()) {
-            alert('You must complete Checkpoint 3 and the Linkvertise task to access this page.');
+            alert('You must complete Checkpoint 3 to access this page.');
             window.location.replace('https://www.sylphx.site'); // Redirect to main page
         }
 
@@ -51,12 +51,12 @@
         // Add event listener to the Get Key button
         const getKeyButton = document.querySelector('.btn');
         getKeyButton.addEventListener('click', function(event) {
-            // Check if the user came from Linkvertise before proceeding
+            // Check if the user came from the checkpoint page before proceeding
             if (checkReferrer()) {
                 markGetKeyCompleted(); // Mark Get Key as completed
             } else {
                 event.preventDefault(); // Prevent navigation
-                alert('You must complete the task on Linkvertise to retrieve your key.');
+                alert('You must complete Checkpoint 3 to retrieve your key.');
             }
         });
     </script>
