@@ -47,29 +47,18 @@
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${key}`;
 
-                // Store in sessionStorage to allow only one key per session
-                sessionStorage.setItem('generatedKey', key);
+                // Store the generated key in localStorage
+                let keys = JSON.parse(localStorage.getItem('keys')) || [];
+                keys.push(key);
+                localStorage.setItem('keys', JSON.stringify(keys));
 
                 // Copy the key to clipboard
                 navigator.clipboard.writeText(key).then(() => {
                     alert('Key copied to clipboard!');
                 });
-
-                // Add the key to the mykeys.html page dynamically
-                addKeyToMyKeysPage(key);
             } else {
                 alert('You must complete the task on Linkvertise to retrieve your key.');
             }
-        }
-
-        // Function to update the mykeys.html page dynamically
-        function addKeyToMyKeysPage(key) {
-            const myKeysPage = document.getElementById('myKeysList');
-            const newKeyElement = document.createElement('li');
-            newKeyElement.innerText = key;
-
-            // Append the new key to the list
-            myKeysPage.appendChild(newKeyElement);
         }
 
         // Add event listener to the Generate Key button
