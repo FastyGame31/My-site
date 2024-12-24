@@ -16,7 +16,7 @@
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
             <p id="status-label">Complete the task on Linkvertise to retrieve your key and proceed.</p>
-            <a href="https://example.com" class="btn">Get Key</a> <!-- Redirect button -->
+            <button class="btn" id="generateKeyBtn">Generate Key</button> <!-- Button to generate key -->
         </div>
     </main>
 
@@ -25,12 +25,6 @@
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
             return referrer.includes('linkvertise.com');
-        }
-
-        // Function to check if Checkpoint 2 was completed
-        function checkProgress() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(2); // Check if Checkpoint 2 is marked as completed
         }
 
         // Function to generate a random key
@@ -86,7 +80,7 @@
 
         // Function to handle key generation and saving
         function handleKeyGeneration() {
-            if (checkReferrer() && checkProgress()) {
+            if (checkReferrer()) {
                 const key = generateKey();
                 document.getElementById('status-label').innerText = `Your generated key: ${key}`;
 
@@ -95,14 +89,20 @@
 
                 // Store in localStorage to prevent re-generation
                 localStorage.setItem('generatedKey', key);
+
+                // Copy the key to clipboard
+                navigator.clipboard.writeText(key).then(() => {
+                    alert('Key copied to clipboard!');
+                });
             } else {
                 alert('You must complete the task on Linkvertise to retrieve your key.');
             }
         }
 
-        // Add event listener to the Get Key button
-        const getKeyButton = document.querySelector('.btn');
-        getKeyButton.addEventListener('click', function(event) {
+        // Add event listener to the Generate Key button
+        const generateKeyButton = document.getElementById('generateKeyBtn');
+        generateKeyButton.addEventListener('click', function(event) {
+            // Check if the user has already generated a key
             if (localStorage.getItem('generatedKey')) {
                 alert('You have already generated a key.');
                 return;
