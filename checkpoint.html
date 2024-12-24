@@ -15,7 +15,7 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Checkpoint 1</h2>
-            <p>This is the checkpoint page. Complete the task on Linkvertise to proceed.</p>
+            <p>This is the checkpoint page. No redirection will occur now.</p>
             <a href="https://link-hub.net/114723/sylph-x-checkpoint-2" class="btn">Proceed</a> <!-- Button with redirect -->
         </div>
     </main>
@@ -27,38 +27,22 @@
             return referrer.includes('linkvertise.com');
         }
 
-        // Redirect to main page if the user didn't come from Linkvertise
+        // If the user didn't come from Linkvertise, redirect to the main page
         if (!checkReferrer()) {
-            alert('You must complete the task on Linkvertise to access this page.');
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page
+            window.location.replace('https://www.sylphx.site'); // Redirect to main page if not from Linkvertise
         }
 
-        // Store progress in localStorage
-        function markCheckpointCompleted() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            if (!progress.includes(1)) {
-                progress.push(1); // Mark Checkpoint 1 as completed
-                localStorage.setItem('progress', JSON.stringify(progress));
-            }
-        }
-
-        // Add event listener to the Proceed button
-        const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', function(event) {
-            // Check if the user came from Linkvertise before proceeding
-            if (checkReferrer()) {
-                markCheckpointCompleted(); // Mark Checkpoint 1 as completed
-            } else {
-                event.preventDefault(); // Prevent navigation
-                alert('You must complete the task on Linkvertise to proceed.');
-            }
-        });
-
-        // Optional: Timer to redirect after 3 minutes (180000 milliseconds)
+        // Timer to redirect after 3 minutes (180000 milliseconds)
         const redirectTimer = setTimeout(function() {
             window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
         }, 180000); // 3 minutes in milliseconds
+
+        // Optional: Reset the timer if the user clicks the "Proceed" button
+        const proceedButton = document.querySelector('.btn');
+        proceedButton.addEventListener('click', function() {
+            clearTimeout(redirectTimer); // Clear the redirect timer when proceeding
+            // You can add actions here for the next checkpoint
+        });
     </script>
 </body>
 </html>
-
