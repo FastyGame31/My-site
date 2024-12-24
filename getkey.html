@@ -50,15 +50,24 @@
         // Function to handle key generation and saving
         async function handleKeyGeneration() {
             if (checkReferrer()) {
-                const key = generateKey();
                 const ip = await getIP(); // Get the user's IP address
+
+                // Check if the IP has already generated a key in the past
+                let storedKeys = JSON.parse(localStorage.getItem('keys')) || [];
+                const existingKey = storedKeys.find(item => item.ip === ip);
+
+                if (existingKey) {
+                    alert('You have already generated a key with this IP address. You can try again after completing the task.');
+                    return;
+                }
+
+                const key = generateKey();
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${key}`;
 
                 // Store the generated key and IP in localStorage
-                let keys = JSON.parse(localStorage.getItem('keys')) || [];
-                keys.push({ key: key, ip: ip });
-                localStorage.setItem('keys', JSON.stringify(keys));
+                storedKeys.push({ key: key, ip: ip });
+                localStorage.setItem('keys', JSON.stringify(storedKeys));
 
                 // Debugging: Log the keys to check if they are stored
                 console.log('Stored Keys:', JSON.parse(localStorage.getItem('keys')));
