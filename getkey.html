@@ -60,12 +60,9 @@
             if (checkReferrer()) {
                 const ip = await getIP(); // Get the user's IP address
 
-                // Check if the IP has already generated a key in the past
-                let storedKeys = JSON.parse(localStorage.getItem('keys')) || [];
-                const existingKey = storedKeys.find(item => item.ip === ip);
-
-                if (existingKey) {
-                    alert('You have already generated a key with this IP address. You can try again after completing the task.');
+                // Check if the user has already generated a key in the current session
+                if (sessionStorage.getItem('generatedKey')) {
+                    alert('You have already generated a key in this session.');
                     return;
                 }
 
@@ -74,8 +71,9 @@
                 statusLabel.innerText = `Your generated key: ${key}`;
 
                 // Store the generated key and IP in localStorage
-                storedKeys.push({ key: key, ip: ip });
-                localStorage.setItem('keys', JSON.stringify(storedKeys));
+                let keys = JSON.parse(localStorage.getItem('keys')) || [];
+                keys.push({ key: key, ip: ip });
+                localStorage.setItem('keys', JSON.stringify(keys));
 
                 // Debugging: Log the keys to check if they are stored
                 console.log('Stored Keys:', JSON.parse(localStorage.getItem('keys')));
@@ -84,6 +82,9 @@
                 navigator.clipboard.writeText(key).then(() => {
                     alert('Key copied to clipboard!');
                 });
+
+                // Mark the session as having generated a key
+                sessionStorage.setItem('generatedKey', 'true');
             } else {
                 alert('You must complete the task on Linkvertise to retrieve your key.');
             }
@@ -92,13 +93,7 @@
         // Add event listener to the Generate Key button
         const generateKeyButton = document.getElementById('generateKeyBtn');
         generateKeyButton.addEventListener('click', function(event) {
-            // Check if the user has already generated a key in the current session
-            if (sessionStorage.getItem('generatedKey')) {
-                alert('You have already generated a key in this session.');
-                return;
-            }
             handleKeyGeneration();
-            sessionStorage.setItem('generatedKey', 'true');
         });
 
         // Call the redirect function when the page loads
