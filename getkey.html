@@ -3,81 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Key | Sylph X</title>
-    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+    <title>Sylph X - My Keys</title>
 </head>
-<body class="checkpoint-page">
-    <header class="header">
-        <h1>Sylph X</h1>
-        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo">
+<body>
+    <header>
+        <h1>Sylph X - My Keys</h1>
     </header>
-    
+
     <main>
-        <div class="checkpoint-panel">
-            <h2>Get Key</h2>
-            <p id="status-label">Complete the task on Linkvertise to retrieve your key and proceed.</p>
-            <button class="btn" id="generateKeyBtn">Generate Key</button>
-        </div>
+        <h2>Generated Keys</h2>
+        <ul id="myKeysList">
+            <!-- Generated keys will appear here -->
+        </ul>
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
+        // Function to get the user's public IP address using ipify API
+        function getIP() {
+            return fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => data.ip);
         }
 
-        // Function to generate a random key
-        function generateKey() {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = 'sylphx1day-';
-            for (let i = 0; i < 25; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-                if (i % 5 === 4 && i !== 24) {
-                    result += '-'; // Add dash after every 5 characters
+        // Function to load keys from localStorage and display them based on IP
+        async function loadKeys() {
+            const ip = await getIP(); // Get the user's IP address
+            const keys = JSON.parse(localStorage.getItem('keys')) || [];
+            const myKeysList = document.getElementById('myKeysList');
+            
+            // Clear the list before adding new keys
+            myKeysList.innerHTML = '';
+
+            // Debugging: Log the keys to check if they are being retrieved correctly
+            console.log('Loaded Keys:', keys);
+
+            // Add each key that matches the current IP to the list
+            keys.forEach(item => {
+                if (item.ip === ip) {
+                    const listItem = document.createElement('li');
+                    listItem.innerText = item.key;
+                    myKeysList.appendChild(listItem);
                 }
-            }
-            return result;
+            });
         }
 
-        // Function to handle key generation and saving
-        function handleKeyGeneration() {
-            if (checkReferrer()) {
-                const key = generateKey();
-                const sessionID = sessionStorage.getItem('sessionID') || Date.now(); // Generate a unique session ID
-                sessionStorage.setItem('sessionID', sessionID); // Store session ID
-
-                const statusLabel = document.getElementById('status-label');
-                statusLabel.innerText = `Your generated key: ${key}`;
-
-                // Store the generated key and session ID in sessionStorage
-                let keys = JSON.parse(sessionStorage.getItem('keys')) || [];
-                keys.push({ key: key, sessionID: sessionID });
-                sessionStorage.setItem('keys', JSON.stringify(keys));
-
-                // Debugging: Log the keys to check if they are stored
-                console.log('Stored Keys:', JSON.parse(sessionStorage.getItem('keys')));
-
-                // Copy the key to clipboard
-                navigator.clipboard.writeText(key).then(() => {
-                    alert('Key copied to clipboard!');
-                });
-            } else {
-                alert('You must complete the task on Linkvertise to retrieve your key.');
-            }
-        }
-
-        // Add event listener to the Generate Key button
-        const generateKeyButton = document.getElementById('generateKeyBtn');
-        generateKeyButton.addEventListener('click', function(event) {
-            // Check if the user has already generated a key in the current session
-            if (sessionStorage.getItem('generatedKey')) {
-                alert('You have already generated a key in this session.');
-                return;
-            }
-            handleKeyGeneration();
-            sessionStorage.setItem('generatedKey', 'true');
-        });
+        // Call the loadKeys function when the page loads
+        loadKeys();
     </script>
 </body>
 </html>
