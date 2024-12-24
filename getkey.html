@@ -40,26 +40,24 @@
             return result;
         }
 
-        // Function to generate a unique HWID based on browser properties
-        function generateHWID() {
-            const userAgent = navigator.userAgent;
-            const screenWidth = screen.width;
-            const screenHeight = screen.height;
-            const time = new Date().getTime();
-            return userAgent + "-" + screenWidth + "x" + screenHeight + "-" + time;
+        // Function to get the user's public IP address using ipify API
+        function getIP() {
+            return fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => data.ip);
         }
 
         // Function to handle key generation and saving
-        function handleKeyGeneration() {
+        async function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
-                const hwid = generateHWID();
+                const ip = await getIP(); // Get the user's IP address
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${key}`;
 
-                // Store the generated key and HWID in localStorage
+                // Store the generated key and IP in localStorage
                 let keys = JSON.parse(localStorage.getItem('keys')) || [];
-                keys.push({ key: key, hwid: hwid });
+                keys.push({ key: key, ip: ip });
                 localStorage.setItem('keys', JSON.stringify(keys));
 
                 // Debugging: Log the keys to check if they are stored
