@@ -15,32 +15,86 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
-            <p>Complete the task on Linkvertise to retrieve your key and proceed.</p>
-            <a href="https://example.com" class="btn">Get Key</a> 
+            <p>Complete Checkpoint 3 to retrieve your key and proceed.</p>
+            <button class="btn" id="getKeyBtn">Get Key</button>
+            <p id="generatedKeyLabel"></p> <!-- Label to display the generated key -->
         </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <script>
+        // Firebase configuration (Replace with your Firebase config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3UB_9c0rrQrOSTmauNJjAQiNyRBquDis",
+            authDomain: "sylph-x.firebaseapp.com",
+            projectId: "sylph-x",
+            storageBucket: "sylph-x.firebasestorage.app",
+            messagingSenderId: "371628018396",
+            appId: "1:371628018396:web:9d7107f2ebbdd6d7328219"
+        };
 
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
-        }
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
 
-
+        // Function to check if Checkpoint 3 is completed
         function checkProgress() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(3); 
+            return progress.includes(3); // Check if Checkpoint 3 is completed
         }
 
-
-        if (!checkReferrer() || !checkProgress()) {
-            alert('You must complete Checkpoint 3 and the Linkvertise task to access this page.');
-            window.location.replace('https://www.sylphx.site'); 
+        // Generate a random key starting with "sylphx1day"
+        function generateKey() {
+            const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let key = 'sylphx1day-';
+            for (let i = 0; i < 25; i++) {
+                key += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+            }
+            return key;
         }
 
+        // Store the generated key in Firebase
+        function storeKeyInFirebase(key) {
+            const keyRef = database.ref('keys/' + key);
+            keyRef.set({
+                key: key,
+                timestamp: new Date().toISOString(),
+                status: 'unused'
+            });
+        }
 
-        function markGetKeyCompleted() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            if (!progress.includes('getkey')) {
-                progress.push('getkey'); 
+        // Function to copy text to clipboard
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        // Button click handler
+        document.getElementById('getKeyBtn').addEventListener('click', function() {
+            if (checkProgress()) {
+                // Generate a key
+                const generatedKey = generateKey();
+                
+                // Display the generated key in the label
+                document.getElementById('generatedKeyLabel').textContent = `Your Key: ${generatedKey}`;
+
+                // Store the key in Firebase
+                storeKeyInFirebase(generatedKey);
+
+                // Copy the key to clipboard
+                copyToClipboard(generatedKey);
+
+                // Clear all saved progress (remove checkpoints)
+                localStorage.removeItem('progress');
+            } else {
+                alert('You must complete Checkpoint 3 to retrieve your key.');
+            }
+        });
+    </script>
+</body>
+</html>
