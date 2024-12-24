@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Key</title>
+    <title>Get Key | Sylph X</title>
     <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
 </head>
 <body class="checkpoint-page">
@@ -21,76 +21,104 @@
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
+        /**
+         * Checks if the user came from Linkvertise.
+         * @returns {boolean} True if the referrer is Linkvertise, otherwise false.
+         */
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
             return referrer.includes('linkvertise.com');
         }
 
-        // Function to generate a random key
+        /**
+         * Generates a random key with a specified pattern.
+         * @returns {string} The generated key.
+         */
         function generateKey() {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = 'sylphx1day-';
             for (let i = 0; i < 25; i++) {
                 result += characters.charAt(Math.floor(Math.random() * characters.length));
                 if (i % 5 === 4 && i !== 24) {
-                    result += '-'; // Add dash after every 5 characters
+                    result += '-'; // Add a dash after every 5 characters
                 }
             }
             return result;
         }
 
-        // Function to save the generated key to GitHub
+        /**
+         * Saves the generated key to GitHub by updating the JSON file.
+         * @param {string} key The key to save.
+         */
         async function saveKeyToGitHub(key) {
             const token = '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'; // Your GitHub token
             const repo = 'my-site'; // Your repository name
             const filePath = 'literal-keys.json'; // Path to the JSON file
             const apiUrl = `https://api.github.com/repos/FastyGame31/${repo}/contents/${filePath}`;
             
-            // Fetch current content of the file
-            const response = await fetch(apiUrl, {
-                headers: {
-                    Authorization: `token ${token}`
+            try {
+                // Fetch current file content from GitHub
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        Authorization: `token ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch file content: ${response.statusText}`);
                 }
-            });
-            const data = await response.json();
-            const sha = data.sha;
 
-            // Get the current keys from the file and add the new key
-            const currentKeys = JSON.parse(atob(data.content)).keys || [];
-            currentKeys.push(key);
+                const data = await response.json();
+                const sha = data.sha; // Current file SHA
+                const currentContent = JSON.parse(atob(data.content));
+                const currentKeys = currentContent.keys || [];
 
-            // Encode the updated keys
-            const updatedContent = btoa(JSON.stringify({ keys: currentKeys }));
+                // Add the new key to the keys array
+                currentKeys.push(key);
 
-            // Update the file on GitHub
-            await fetch(apiUrl, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Add new key',
-                    content: updatedContent,
-                    sha: sha
-                })
-            });
+                // Encode the updated content
+                const updatedContent = btoa(JSON.stringify({ keys: currentKeys }));
+
+                // Send the update request to GitHub
+                const updateResponse = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Add new key',
+                        content: updatedContent,
+                        sha: sha
+                    })
+                });
+
+                if (!updateResponse.ok) {
+                    throw new Error(`Failed to update file: ${updateResponse.statusText}`);
+                }
+
+                console.log('Key successfully saved to GitHub!');
+            } catch (error) {
+                console.error('Error saving key to GitHub:', error);
+                alert('An error occurred while saving the key. Please try again later.');
+            }
         }
 
-        // Function to handle key generation and saving
-        function handleKeyGeneration() {
+        /**
+         * Handles the key generation and saving process.
+         */
+        async function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
                 document.getElementById('status-label').innerText = `Your generated key: ${key}`;
 
                 // Save the key to GitHub
-                saveKeyToGitHub(key);
+                await saveKeyToGitHub(key);
 
-                // Store in sessionStorage to allow only one key per session
+                // Store the key in sessionStorage to restrict one key per session
                 sessionStorage.setItem('generatedKey', key);
 
-                // Copy the key to clipboard
+                // Copy the key to the clipboard
                 navigator.clipboard.writeText(key).then(() => {
                     alert('Key copied to clipboard!');
                 });
@@ -99,15 +127,13 @@
             }
         }
 
-        // Add event listener to the Generate Key button
-        const generateKeyButton = document.getElementById('generateKeyBtn');
-        generateKeyButton.addEventListener('click', function(event) {
-            // Check if the user has already generated a key in the current session
+        // Add an event listener to the Generate Key button
+        document.getElementById('generateKeyBtn').addEventListener('click', () => {
             if (sessionStorage.getItem('generatedKey')) {
                 alert('You have already generated a key in this session.');
-                return;
+            } else {
+                handleKeyGeneration();
             }
-            handleKeyGeneration();
         });
     </script>
 </body>
