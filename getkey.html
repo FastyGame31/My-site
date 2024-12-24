@@ -20,26 +20,7 @@
         </div>
     </main>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
-
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3UB_9c0rrQrOSTmauNJjAQiNyRBquDis",
-            authDomain: "sylph-x.firebaseapp.com",
-            projectId: "sylph-x",
-            storageBucket: "sylph-x.firebasestorage.app",
-            messagingSenderId: "371628018396",
-            appId: "1:371628018396:web:9d7107f2ebbdd6d7328219",
-            measurementId: "G-2B5SPNDEGK"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(app);
-
         /**
          * Checks if the user came from Linkvertise.
          * @returns {boolean} True if the referrer is Linkvertise, otherwise false.
@@ -66,19 +47,38 @@
         }
 
         /**
-         * Saves the generated key to Firebase Realtime Database.
+         * Saves the generated key to Pastebin.
          * @param {string} key The key to save.
          */
-        async function saveKeyToFirebase(key) {
-            const keyRef = database.ref('keys/' + key); // Reference for the key in the database
+        async function saveKeyToPastebin(key) {
+            const apiKey = 'nM6ywwjDz73UmWvDMUNlQLEzhV2dedZa'; // Your Pastebin API key
+            const pasteContent = Generated Key: ${key};
+            const apiUrl = 'https://pastebin.com/api/api_post.php';
+
+            const formData = new URLSearchParams();
+            formData.append('api_dev_key', apiKey);
+            formData.append('api_option', 'paste');
+            formData.append('api_paste_code', pasteContent);
+            formData.append('api_paste_private', '1'); // Unlisted paste
+            formData.append('api_paste_name', 'SylphX Key');
+            formData.append('api_paste_expire_date', '10M'); // 10 minutes expiry
+
             try {
-                await keyRef.set({
-                    key: key,
-                    timestamp: new Date().toISOString()
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
                 });
-                console.log('Key successfully saved to Firebase');
+
+                const result = await response.text();
+                if (result.startsWith('http')) {
+                    console.log('Key successfully saved to Pastebin:', result);
+                    alert(Your key has been saved. Pastebin URL: ${result});
+                } else {
+                    throw new Error(result);
+                }
             } catch (error) {
-                console.error('Error saving key to Firebase:', error);
+                console.error('Error saving key to Pastebin:', error);
+                alert('An error occurred while saving the key. Please try again later.');
             }
         }
 
@@ -88,10 +88,10 @@
         async function handleKeyGeneration() {
             if (checkReferrer()) {
                 const key = generateKey();
-                document.getElementById('status-label').innerText = `Your generated key: ${key}`; // Update the label text
+                document.getElementById('status-label').innerText = Your generated key: ${key};
 
-                // Save the key to Firebase
-                await saveKeyToFirebase(key);
+                // Save the key to Pastebin
+                await saveKeyToPastebin(key);
 
                 // Store the key in sessionStorage to restrict one key per session
                 sessionStorage.setItem('generatedKey', key);
