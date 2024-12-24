@@ -62,6 +62,9 @@
                 keys.push({ key: key, hwid: hwid });
                 localStorage.setItem('keys', JSON.stringify(keys));
 
+                // Debugging: Log the keys to check if they are stored
+                console.log('Stored Keys:', JSON.parse(localStorage.getItem('keys')));
+
                 // Copy the key to clipboard
                 navigator.clipboard.writeText(key).then(() => {
                     alert('Key copied to clipboard!');
