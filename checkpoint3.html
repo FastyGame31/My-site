@@ -33,6 +33,13 @@
             return progress.includes(2); // Ensure Checkpoint 2 is marked as completed
         }
 
+        // Function to remove Checkpoint 2 progress
+        function removeCheckpoint2() {
+            const progress = JSON.parse(localStorage.getItem('progress')) || [];
+            const updatedProgress = progress.filter(checkpoint => checkpoint !== 2); // Remove Checkpoint 2
+            localStorage.setItem('progress', JSON.stringify(updatedProgress));
+        }
+
         // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 2
         if (!checkReferrer() || !checkProgress()) {
             alert('You must complete Checkpoint 2 and the Linkvertise task to access this page.');
@@ -54,6 +61,7 @@
             // Check if the user came from Linkvertise before proceeding
             if (checkReferrer()) {
                 markCheckpointCompleted(); // Mark Checkpoint 3 as completed
+                removeCheckpoint2(); // Remove Checkpoint 2 progress
             } else {
                 event.preventDefault(); // Prevent navigation
                 alert('You must complete the task on Linkvertise to proceed.');
