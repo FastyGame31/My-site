@@ -16,11 +16,26 @@
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
             <p>Complete the task on Linkvertise to retrieve your key and proceed.</p>
-            <a href="https://example.com" class="btn">Get Key</a> <!-- Redirect button -->
+            <a href="#" class="btn">Get Key</a> <!-- Redirect button -->
         </div>
     </main>
 
     <script>
+        // Firebase credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3UB_9c0rrQrOSTmauNJjAQiNyRBquDis",
+            authDomain: "sylph-x.firebaseapp.com",
+            projectId: "sylph-x",
+            storageBucket: "sylph-x.firebasestorage.app",
+            messagingSenderId: "371628018396",
+            appId: "1:371628018396:web:9d7107f2ebbdd6d7328219",
+            measurementId: "G-2B5SPNDEGK"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Function to check if the user came from the specific checkpoint page
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
@@ -39,6 +54,32 @@
             window.location.replace('https://www.sylphx.site'); // Redirect to main page
         }
 
+        // Function to generate a random key
+        function generateKey() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = 'sylphx1day-';
+            for (let i = 0; i < 25; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+                if (i % 5 === 4 && i !== 24) result += '-'; // Add dashes every 5 characters
+            }
+            return result;
+        }
+
+        // Function to store the generated key in Firebase
+        function storeKeyInFirebase(key) {
+            const userId = "user_" + Date.now(); // Unique user ID (you can replace this with a real user ID)
+            db.collection('keys').doc(userId).set({
+                key: key,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                console.log("Key stored successfully");
+            })
+            .catch((error) => {
+                console.error("Error storing key: ", error);
+            });
+        }
+
         // Store progress in localStorage for Get Key
         function markGetKeyCompleted() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
@@ -53,12 +94,29 @@
         getKeyButton.addEventListener('click', function(event) {
             // Check if the user came from the checkpoint page before proceeding
             if (checkReferrer()) {
-                markGetKeyCompleted(); // Mark Get Key as completed
+                // Generate a new key and store it in Firebase
+                const key = generateKey();
+                storeKeyInFirebase(key);
+                
+                // Mark Get Key as completed
+                markGetKeyCompleted();
+
+                // Remove Checkpoint 3 from progress
+                let progress = JSON.parse(localStorage.getItem('progress')) || [];
+                progress = progress.filter(item => item !== 3); // Remove Checkpoint 3
+                localStorage.setItem('progress', JSON.stringify(progress));
+
+                alert('Key generated and stored successfully!');
             } else {
                 event.preventDefault(); // Prevent navigation
                 alert('You must complete Checkpoint 3 to retrieve your key.');
             }
         });
+
+        // Redirect the user after 5 minutes
+        setTimeout(function() {
+            window.location.replace('https://www.sylphx.site'); // Redirect to main page after 5 minutes
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
     </script>
 </body>
 </html>
