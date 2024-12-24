@@ -1,1 +1,108 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Get Key Page Styles */
+body.checkpoint-page {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header Section */
+.checkpoint-page .header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+.checkpoint-page .header h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+.checkpoint-page .header .logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: brightness(0) invert(1); /* Makes the black logo visible */
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel */
+.checkpoint-page .checkpoint-panel {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel Title */
+.checkpoint-page .checkpoint-panel h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Checkpoint Panel Description */
+.checkpoint-page .checkpoint-panel p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+/* Button Styling */
+.checkpoint-page .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #444;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+}
+
+.checkpoint-page .btn:hover {
+    background-color: #fff;
+    color: #000;
+}
 
