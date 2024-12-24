@@ -3,133 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Key</title>
-    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+    <title>Checkpoint 2</title>
+    <link rel="stylesheet" href="checkpoint2.css"> <!-- Link to the checkpoint2 CSS -->
 </head>
 <body class="checkpoint-page">
     <header class="header">
-        <h1>Sylph X</h1> <!-- Normal case for Sylph X -->
+        <h1>Sylph X</h1> <!-- Changed to normal case -->
         <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
     </header>
     
     <main>
         <div class="checkpoint-panel">
-            <h2>Get Key</h2>
-            <p id="key-label">Linkvertise to retrieve your key and proceed.</p>
-            <button class="btn">Get Key</button> <!-- Button to generate key -->
+            <h2>Checkpoint 2</h2> <!-- Updated to Checkpoint 2 -->
+            <p>This is the second checkpoint page. Complete the task on Linkvertise to proceed.</p>
+            <a href="https://direct-link.net/114723/sylph-x-checkpoint-3" class="btn">Proceed</a> <!-- Button with redirect -->
         </div>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
-    
     <script>
-        // Firebase credentials
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3UB_9c0rrQrOSTmauNJjAQiNyRBquDis",
-            authDomain: "sylph-x.firebaseapp.com",
-            projectId: "sylph-x",
-            storageBucket: "sylph-x.firebasestorage.app",
-            messagingSenderId: "371628018396",
-            appId: "1:371628018396:web:9d7107f2ebbdd6d7328219",
-            measurementId: "G-2B5SPNDEGK"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-
-        // Function to check if the user came from the specific checkpoint page
+        // Function to check if the user came from Linkvertise
         function checkReferrer() {
             const referrer = document.referrer.toLowerCase();
             return referrer.includes('linkvertise.com');
         }
 
-        // Function to check if Checkpoint 3 was completed
+        // Function to check if Checkpoint 1 was completed
         function checkProgress() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(3); // Ensure Checkpoint 3 is marked as completed
+            return progress.includes(1); // Ensure Checkpoint 1 is marked as completed
         }
 
-        // Redirect to the main page if the user didn't come from the checkpoint page or skip Checkpoint 3
+        // Function to remove Checkpoint 1 progress
+        function removeCheckpoint1() {
+            const progress = JSON.parse(localStorage.getItem('progress')) || [];
+            const updatedProgress = progress.filter(checkpoint => checkpoint !== 1); // Remove Checkpoint 1
+            localStorage.setItem('progress', JSON.stringify(updatedProgress));
+        }
+
+        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 1
         if (!checkReferrer() || !checkProgress()) {
-            alert('You must complete Checkpoint 3 to access this page.');
+            alert('You must complete Checkpoint 1 and the Linkvertise task to access this page.');
             window.location.replace('https://www.sylphx.site'); // Redirect to main page
         }
 
-        // Function to generate a random key
-        function generateKey() {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = 'sylphx1day-';
-            for (let i = 0; i < 25; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-                if (i % 5 === 4 && i !== 24) result += '-'; // Add dashes every 5 characters
-            }
-            return result;
-        }
-
-        // Function to store the generated key in Firebase
-        function storeKeyInFirebase(key) {
-            const userId = "user_" + Date.now(); // Unique user ID (you can replace this with a real user ID)
-            db.collection('keys').doc(userId).set({
-                key: key,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                console.log("Key stored successfully");
-            })
-            .catch((error) => {
-                console.error("Error storing key: ", error);
-            });
-        }
-
-        // Store progress in localStorage for Get Key
-        function markGetKeyCompleted() {
+        // Store progress in localStorage
+        function markCheckpointCompleted() {
             const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            if (!progress.includes('getkey')) {
-                progress.push('getkey'); // Mark Get Key as completed
+            if (!progress.includes(2)) {
+                progress.push(2); // Mark Checkpoint 2 as completed
                 localStorage.setItem('progress', JSON.stringify(progress));
             }
         }
 
-        // Function to remove Checkpoint 3 from progress
-        function removeCheckpoint3() {
-            let progress = JSON.parse(localStorage.getItem('progress')) || [];
-            progress = progress.filter(item => item !== 3); // Remove Checkpoint 3
-            localStorage.setItem('progress', JSON.stringify(progress));
-        }
-
-        // Add event listener to the Get Key button
-        const getKeyButton = document.querySelector('.btn');
-        const keyLabel = document.getElementById('key-label');
-        
-        getKeyButton.addEventListener('click', function(event) {
-            // Check if the user came from the checkpoint page before proceeding
+        // Add event listener to the Proceed button
+        const proceedButton = document.querySelector('.btn');
+        proceedButton.addEventListener('click', function(event) {
+            // Check if the user came from Linkvertise before proceeding
             if (checkReferrer()) {
-                // Generate a new key and store it in Firebase
-                const key = generateKey();
-                storeKeyInFirebase(key);
-                
-                // Display the generated key
-                keyLabel.textContent = `Your generated key: ${key}`;
-
-                // Enable copying to clipboard
-                navigator.clipboard.writeText(key).then(() => {
-                    alert('Key copied to clipboard!');
-                }).catch(err => {
-                    console.error('Error copying key to clipboard: ', err);
-                });
-
-                // Mark Get Key as completed
-                markGetKeyCompleted();
-
-                // Remove Checkpoint 3 from progress
-                removeCheckpoint3();
+                markCheckpointCompleted(); // Mark Checkpoint 2 as completed
+                removeCheckpoint1(); // Remove Checkpoint 1 progress
             } else {
                 event.preventDefault(); // Prevent navigation
-                alert('You must complete Checkpoint 3 to retrieve your key.');
+                alert('You must complete the task on Linkvertise to proceed.');
             }
         });
+
+        // Optional: Timer to redirect after 3 minutes (180000 milliseconds)
+        const redirectTimer = setTimeout(function() {
+            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
+        }, 180000); // 3 minutes in milliseconds
     </script>
 </body>
 </html>
