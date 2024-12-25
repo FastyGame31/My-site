@@ -18,11 +18,5 @@
       "source": "/getkey",
       "destination": "/getkey.html"
     }
-  ],
-  "functions": {
-    "api/verify-key.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  ]
 }
