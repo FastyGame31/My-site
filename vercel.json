@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/checkpoint",
@@ -17,20 +19,10 @@
       "destination": "/getkey.html"
     }
   ],
-  "builds": [
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/verify-key.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/verify-key.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/verify-key",
-      "dest": "/api/verify-key.js"
-    }
-  ]
+  }
 }
