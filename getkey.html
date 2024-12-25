@@ -25,12 +25,12 @@
 
     <!-- Your custom script should come after the library -->
     <script>
-        // Initialize Supabase outside the DOMContentLoaded event listener
-        const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';  // Your Supabase URL
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';  // Your anon public key
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Properly declared
-
+        // Initialize Supabase inside the DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', () => {
+            const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';  // Your Supabase URL
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';  // Your anon public key
+            const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Initialize here
+
             checkCheckpoint2Progress();
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
