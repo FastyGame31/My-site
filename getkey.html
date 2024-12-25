@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Key | Sylph X</title>
     <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- Supabase JS library -->
 </head>
 <body class="checkpoint-page">
     <header class="header">
@@ -21,6 +22,11 @@
     </main>
 
     <script>
+        // Supabase setup
+        const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
         // Function to check if progress from Checkpoint 2 exists
         function checkCheckpoint2Progress() {
             const progress = localStorage.getItem('progress');
@@ -35,8 +41,37 @@
             localStorage.removeItem('progress'); // Remove progress 15
         }
 
-        // Function to generate a random key
-        function generateKey() {
+        // Function to generate a key in Supabase
+        async function generateKeyInDatabase() {
+            const { data, error } = await supabase
+                .from('keys') // Replace with your table name
+                .insert([
+                    { key: generateRandomKey(), is_used: false }
+                ]);
+
+            if (error) {
+                console.error('Error inserting key:', error);
+                alert('Failed to generate key. Please try again.');
+            } else {
+                const generatedKey = data[0].key;
+                const statusLabel = document.getElementById('status-label');
+                statusLabel.innerText = `Your generated key: ${generatedKey}`;
+
+                // Copy the key to clipboard
+                navigator.clipboard.writeText(generatedKey).then(() => {
+                    alert('Key copied to clipboard!');
+                });
+
+                // Mark the session as having generated a key
+                sessionStorage.setItem('generatedKey', 'true');
+
+                // Remove Checkpoint 2 progress
+                removeCheckpoint2Progress();
+            }
+        }
+
+        // Function to generate a random key (local generation for storing in the database)
+        function generateRandomKey() {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = 'sylphx1day-';
             for (let i = 0; i < 25; i++) {
@@ -56,20 +91,8 @@
                 return;
             }
 
-            const key = generateKey();
-            const statusLabel = document.getElementById('status-label');
-            statusLabel.innerText = `Your generated key: ${key}`;
-
-            // Copy the key to clipboard
-            navigator.clipboard.writeText(key).then(() => {
-                alert('Key copied to clipboard!');
-            });
-
-            // Mark the session as having generated a key
-            sessionStorage.setItem('generatedKey', 'true');
-
-            // Remove Checkpoint 2 progress
-            removeCheckpoint2Progress();
+            // Generate and store the key in Supabase
+            generateKeyInDatabase();
         }
 
         // Add event listener to the Generate Key button
