@@ -52,7 +52,7 @@
                 }
 
                 // Make a request to the serverless function to generate the key
-                const response = await fetch('/api/generate-key');
+                const response = await fetch('/api/generate-key?key=true');
                 const data = await response.json();
 
                 if (data.key) {
