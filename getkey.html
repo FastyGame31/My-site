@@ -23,93 +23,93 @@
 
     <script>
         // Supabase setup after script is loaded
-        let supabase;
         window.onload = () => {
             const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
             const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';
-            supabase = supabase.createClient(supabaseUrl, supabaseKey);
+            const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Create the Supabase client here
+            
             // Now we can proceed with the rest of the code that uses supabase
             checkCheckpoint2Progress();
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
-        };
 
-        // Function to check if progress from Checkpoint 2 exists
-        function checkCheckpoint2Progress() {
-            const progress = localStorage.getItem('progress');
-            if (progress !== '10') {
-                alert('You must complete Checkpoint 2 to access this page.');
-                window.location.replace('https://www.sylphx.site'); // Redirect to main page
-            }
-        }
-
-        // Function to remove Checkpoint 2 progress
-        function removeCheckpoint2Progress() {
-            localStorage.removeItem('progress'); // Remove progress 15
-        }
-
-        // Function to generate a key in Supabase
-        async function generateKeyInDatabase() {
-            console.log('Generating key...');
-
-            const randomKey = generateRandomKey();
-            console.log('Generated Key:', randomKey);
-
-            const { data, error } = await supabase
-                .from('keys') // Replace with your table name
-                .insert([
-                    { key: randomKey, is_used: false }
-                ]);
-
-            if (error) {
-                console.error('Error inserting key:', error);
-                alert('Failed to generate key. Please try again.');
-            } else {
-                console.log('Key inserted:', data);
-                const generatedKey = data[0].key;
-                const statusLabel = document.getElementById('status-label');
-                statusLabel.innerText = `Your generated key: ${generatedKey}`;
-
-                // Copy the key to clipboard
-                navigator.clipboard.writeText(generatedKey).then(() => {
-                    alert('Key copied to clipboard!');
-                }).catch((err) => {
-                    console.error('Clipboard copy failed:', err);
-                    alert('Failed to copy key to clipboard.');
-                });
-
-                // Mark the session as having generated a key
-                sessionStorage.setItem('generatedKey', 'true');
-
-                // Remove Checkpoint 2 progress
-                removeCheckpoint2Progress();
-            }
-        }
-
-        // Function to generate a random key (local generation for storing in the database)
-        function generateRandomKey() {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = 'sylphx1day-';
-            for (let i = 0; i < 25; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-                if (i % 5 === 4 && i !== 24) {
-                    result += '-'; // Add dash after every 5 characters
+            // Function to check if progress from Checkpoint 2 exists
+            function checkCheckpoint2Progress() {
+                const progress = localStorage.getItem('progress');
+                if (progress !== '10') {
+                    alert('You must complete Checkpoint 2 to access this page.');
+                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
                 }
             }
-            return result;
-        }
 
-        // Function to handle key generation
-        function handleKeyGeneration() {
-            // Check if the user has already generated a key in the current session
-            if (sessionStorage.getItem('generatedKey')) {
-                alert('You have already generated a key in this session.');
-                return;
+            // Function to remove Checkpoint 2 progress
+            function removeCheckpoint2Progress() {
+                localStorage.removeItem('progress'); // Remove progress 15
             }
 
-            // Generate and store the key in Supabase
-            generateKeyInDatabase();
-        }
+            // Function to generate a key in Supabase
+            async function generateKeyInDatabase() {
+                console.log('Generating key...');
+
+                const randomKey = generateRandomKey();
+                console.log('Generated Key:', randomKey);
+
+                const { data, error } = await supabase
+                    .from('keys') // Replace with your table name
+                    .insert([
+                        { key: randomKey, is_used: false }
+                    ]);
+
+                if (error) {
+                    console.error('Error inserting key:', error);
+                    alert('Failed to generate key. Please try again.');
+                } else {
+                    console.log('Key inserted:', data);
+                    const generatedKey = data[0].key;
+                    const statusLabel = document.getElementById('status-label');
+                    statusLabel.innerText = `Your generated key: ${generatedKey}`;
+
+                    // Copy the key to clipboard
+                    navigator.clipboard.writeText(generatedKey).then(() => {
+                        alert('Key copied to clipboard!');
+                    }).catch((err) => {
+                        console.error('Clipboard copy failed:', err);
+                        alert('Failed to copy key to clipboard.');
+                    });
+
+                    // Mark the session as having generated a key
+                    sessionStorage.setItem('generatedKey', 'true');
+
+                    // Remove Checkpoint 2 progress
+                    removeCheckpoint2Progress();
+                }
+            }
+
+            // Function to generate a random key (local generation for storing in the database)
+            function generateRandomKey() {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = 'sylphx1day-';
+                for (let i = 0; i < 25; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                    if (i % 5 === 4 && i !== 24) {
+                        result += '-'; // Add dash after every 5 characters
+                    }
+                }
+                return result;
+            }
+
+            // Function to handle key generation
+            function handleKeyGeneration() {
+                // Check if the user has already generated a key in the current session
+                if (sessionStorage.getItem('generatedKey')) {
+                    alert('You have already generated a key in this session.');
+                    return;
+                }
+
+                // Generate and store the key in Supabase
+                generateKeyInDatabase();
+            }
+        };
     </script>
 </body>
 </html>
