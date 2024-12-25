@@ -1,20 +1,77 @@
-export default function handler(req, res) {
-  // Function to generate a random alphanumeric string
-  function generateRandomKey() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < 25; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-      if (i % 5 === 4 && i !== 24) {
-        result += '-'; // Add dash after every 5 characters
-      }
-    }
-    return result;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Key | Sylph X</title>
+    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+</head>
+<body class="checkpoint-page">
+    <header class="header">
+        <h1>Sylph X</h1>
+        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo">
+    </header>
+    
+    <main>
+        <div class="checkpoint-panel">
+            <h2>Get Key</h2>
+            <p id="status-label">Press the button below to generate your key and proceed.</p>
+            <button class="btn" id="generateKeyBtn">Generate Key</button>
+        </div>
+    </main>
 
-  // Generate the key
-  const randomKey = `sylphx1day-${generateRandomKey()}`;
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateKeyButton = document.getElementById('generateKeyBtn');
+            generateKeyButton.addEventListener('click', handleKeyGeneration);
 
-  // Respond with the generated key
-  res.status(200).json({ key: randomKey });
-}
+            // Function to check checkpoint progress
+            function checkCheckpointProgress() {
+                const progress = localStorage.getItem('progress');
+                if (progress !== '10') {
+                    alert('You must complete Checkpoint 2 to access this page.');
+                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                }
+            }
+
+            // Function to handle key generation
+            async function handleKeyGeneration() {
+                // Check if the user has already generated a key in the current session
+                if (sessionStorage.getItem('generatedKey')) {
+                    alert('You have already generated a key in this session.');
+                    return;
+                }
+
+                // Make a request to the serverless function to generate the key
+                const response = await fetch('/api/generate-key');
+                const data = await response.json();
+
+                if (data.key) {
+                    const generatedKey = data.key;
+                    const statusLabel = document.getElementById('status-label');
+                    statusLabel.innerText = `Your generated key: ${generatedKey}`;
+
+                    // Copy the key to clipboard
+                    navigator.clipboard.writeText(generatedKey).then(() => {
+                        alert('Key copied to clipboard!');
+                    }).catch((err) => {
+                        console.error('Clipboard copy failed:', err);
+                        alert('Failed to copy key to clipboard.');
+                    });
+
+                    // Mark the session as having generated a key
+                    sessionStorage.setItem('generatedKey', 'true');
+
+                    // Remove Checkpoint progress after key generation
+                    localStorage.removeItem('progress');
+                } else {
+                    alert('Failed to generate key. Please try again.');
+                }
+            }
+
+            // Check checkpoint progress
+            checkCheckpointProgress();
+        });
+    </script>
+</body>
+</html>
