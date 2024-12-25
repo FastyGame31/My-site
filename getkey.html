@@ -81,11 +81,17 @@
             // Function to generate a random key
             function generateKey() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                let key = '';
-                for (let i = 0; i < 16; i++) {
-                    key += characters.charAt(Math.floor(Math.random() * characters.length));
+                let randomPart = '';
+                
+                // Generate a random 25-character string with hyphens
+                for (let i = 0; i < 25; i++) {
+                    randomPart += characters.charAt(Math.floor(Math.random() * characters.length));
+                    if (i % 5 === 4 && i !== 24) {
+                        randomPart += '-'; // Add hyphen after every 5 characters
+                    }
                 }
-                return key;
+                
+                return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
             }
 
             // Function to get the user's IP address using a service like ipify
