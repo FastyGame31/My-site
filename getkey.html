@@ -55,6 +55,8 @@
                 const response = await fetch('/api/generate-key?key=true');
                 const data = await response.json();
 
+                console.log('API response:', data); // Log the API response for debugging
+
                 if (data.key) {
                     const generatedKey = data.key;
                     const statusLabel = document.getElementById('status-label');
