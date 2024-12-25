@@ -43,16 +43,22 @@
 
         // Function to generate a key in Supabase
         async function generateKeyInDatabase() {
+            console.log('Generating key...');
+
+            const randomKey = generateRandomKey();
+            console.log('Generated Key:', randomKey);
+
             const { data, error } = await supabase
                 .from('keys') // Replace with your table name
                 .insert([
-                    { key: generateRandomKey(), is_used: false }
+                    { key: randomKey, is_used: false }
                 ]);
 
             if (error) {
                 console.error('Error inserting key:', error);
                 alert('Failed to generate key. Please try again.');
             } else {
+                console.log('Key inserted:', data);
                 const generatedKey = data[0].key;
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${generatedKey}`;
@@ -60,6 +66,9 @@
                 // Copy the key to clipboard
                 navigator.clipboard.writeText(generatedKey).then(() => {
                     alert('Key copied to clipboard!');
+                }).catch((err) => {
+                    console.error('Clipboard copy failed:', err);
+                    alert('Failed to copy key to clipboard.');
                 });
 
                 // Mark the session as having generated a key
