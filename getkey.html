@@ -22,10 +22,17 @@
     </main>
 
     <script>
-        // Supabase setup
-        const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        // Supabase setup after script is loaded
+        let supabase;
+        window.onload = () => {
+            const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';
+            supabase = supabase.createClient(supabaseUrl, supabaseKey);
+            // Now we can proceed with the rest of the code that uses supabase
+            checkCheckpoint2Progress();
+            const generateKeyButton = document.getElementById('generateKeyBtn');
+            generateKeyButton.addEventListener('click', handleKeyGeneration);
+        };
 
         // Function to check if progress from Checkpoint 2 exists
         function checkCheckpoint2Progress() {
@@ -103,13 +110,6 @@
             // Generate and store the key in Supabase
             generateKeyInDatabase();
         }
-
-        // Add event listener to the Generate Key button
-        const generateKeyButton = document.getElementById('generateKeyBtn');
-        generateKeyButton.addEventListener('click', handleKeyGeneration);
-
-        // Validate progress on page load
-        checkCheckpoint2Progress();
     </script>
 </body>
 </html>
