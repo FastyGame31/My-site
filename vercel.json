@@ -16,21 +16,5 @@
       "source": "/getkey",
       "destination": "/getkey.html"
     }
-  ],
-  "builds": [
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/verify-key.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/verify-key",
-      "dest": "/api/verify-key.js"
-    }
   ]
 }
