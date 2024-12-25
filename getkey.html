@@ -15,39 +15,24 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Get Key</h2>
-            <p id="status-label">Complete the task on Linkvertise to retrieve your key and proceed.</p>
+            <p id="status-label">Press the button below to generate your key and proceed.</p>
             <button class="btn" id="generateKeyBtn">Generate Key</button>
         </div>
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
-        }
-
-        // Function to check if the user has completed Checkpoint 2
-        function checkProgress() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(2); // Check if Checkpoint 2 is completed
-        }
-
-        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 2
-        function redirectIfNotCompleted() {
-            if (!checkReferrer() || !checkProgress()) {
-                alert('You must complete Checkpoint 2 and the Linkvertise task to access this page.');
+        // Function to check if progress from Checkpoint 2 exists
+        function checkCheckpoint2Progress() {
+            const progress = localStorage.getItem('progress');
+            if (progress !== '15') {
+                alert('You must complete Checkpoint 2 to access this page.');
                 window.location.replace('https://www.sylphx.site'); // Redirect to main page
             }
         }
 
-        // Store progress in localStorage
-        function markCheckpointCompleted() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            if (!progress.includes(2)) {
-                progress.push(2); // Mark Checkpoint 2 as completed
-                localStorage.setItem('progress', JSON.stringify(progress));
-            }
+        // Function to remove Checkpoint 2 progress
+        function removeCheckpoint2Progress() {
+            localStorage.removeItem('progress'); // Remove progress 15
         }
 
         // Function to generate a random key
@@ -63,66 +48,36 @@
             return result;
         }
 
-        // Function to get the user's public IP address using ipify API
-        function getIP() {
-            return fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => data.ip);
-        }
-
-        // Function to handle key generation and saving
-        async function handleKeyGeneration() {
-            if (checkReferrer()) {
-                const ip = await getIP(); // Get the user's IP address
-
-                // Check if the user has already generated a key in the current session
-                if (sessionStorage.getItem('generatedKey')) {
-                    alert('You have already generated a key in this session.');
-                    return;
-                }
-
-                const key = generateKey();
-                const statusLabel = document.getElementById('status-label');
-                statusLabel.innerText = `Your generated key: ${key}`;
-
-                // Store the generated key and IP in localStorage
-                let keys = JSON.parse(localStorage.getItem('keys')) || [];
-                keys.push({ key: key, ip: ip });
-                localStorage.setItem('keys', JSON.stringify(keys));
-
-                // Debugging: Log the keys to check if they are stored
-                console.log('Stored Keys:', JSON.parse(localStorage.getItem('keys')));
-
-                // Copy the key to clipboard
-                navigator.clipboard.writeText(key).then(() => {
-                    alert('Key copied to clipboard!');
-                });
-
-                // Mark the session as having generated a key
-                sessionStorage.setItem('generatedKey', 'true');
-
-                // Remove Checkpoint 2 progress when the key is generated
-                removeCheckpoint2Progress();
-            } else {
-                alert('You must complete the task on Linkvertise to retrieve your key.');
+        // Function to handle key generation
+        function handleKeyGeneration() {
+            // Check if the user has already generated a key in the current session
+            if (sessionStorage.getItem('generatedKey')) {
+                alert('You have already generated a key in this session.');
+                return;
             }
-        }
 
-        // Remove Checkpoint 2 progress from localStorage
-        function removeCheckpoint2Progress() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            const updatedProgress = progress.filter(checkpoint => checkpoint !== 2); // Remove Checkpoint 2
-            localStorage.setItem('progress', JSON.stringify(updatedProgress));
+            const key = generateKey();
+            const statusLabel = document.getElementById('status-label');
+            statusLabel.innerText = `Your generated key: ${key}`;
+
+            // Copy the key to clipboard
+            navigator.clipboard.writeText(key).then(() => {
+                alert('Key copied to clipboard!');
+            });
+
+            // Mark the session as having generated a key
+            sessionStorage.setItem('generatedKey', 'true');
+
+            // Remove Checkpoint 2 progress
+            removeCheckpoint2Progress();
         }
 
         // Add event listener to the Generate Key button
         const generateKeyButton = document.getElementById('generateKeyBtn');
-        generateKeyButton.addEventListener('click', function(event) {
-            handleKeyGeneration();
-        });
+        generateKeyButton.addEventListener('click', handleKeyGeneration);
 
-        // Call the redirect function when the page loads
-        redirectIfNotCompleted();
+        // Validate progress on page load
+        checkCheckpoint2Progress();
     </script>
 </body>
 </html>
