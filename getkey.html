@@ -42,6 +42,15 @@
                     return;
                 }
 
+                // Check if the key is already stored in sessionStorage
+                const storedKey = sessionStorage.getItem('key');
+                if (storedKey) {
+                    // If a key already exists, use it
+                    const statusLabel = document.getElementById('status-label');
+                    statusLabel.innerText = `Your generated key: ${storedKey}`;
+                    return;
+                }
+
                 // Make a request to the serverless function to generate the key
                 const response = await fetch('/api/generate-key');
                 const data = await response.json();
@@ -59,8 +68,9 @@
                         alert('Failed to copy key to clipboard.');
                     });
 
-                    // Mark the session as having generated a key
-                    sessionStorage.setItem('generatedKey', 'true');
+                    // Store the key in sessionStorage
+                    sessionStorage.setItem('key', generatedKey);
+                    sessionStorage.setItem('generatedKey', 'true'); // Mark that the key was generated
 
                     // Remove Checkpoint progress after key generation
                     localStorage.removeItem('progress');
