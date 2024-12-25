@@ -42,17 +42,8 @@
                     return;
                 }
 
-                // Check if the key is already stored in sessionStorage
-                const storedKey = sessionStorage.getItem('key');
-                if (storedKey) {
-                    // If a key already exists, use it
-                    const statusLabel = document.getElementById('status-label');
-                    statusLabel.innerText = `Your generated key: ${storedKey}`;
-                    return;
-                }
-
                 // Make a request to the serverless function to generate the key
-                const response = await fetch('/api/generate-key?key=true');
+                const response = await fetch('/api/generate-key');
                 const data = await response.json();
 
                 console.log('API response:', data); // Log the API response for debugging
