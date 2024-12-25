@@ -20,14 +20,15 @@
         </div>
     </main>
 
-    <!-- Load Supabase library at the end of the body to ensure it is fully loaded before usage -->
+    <!-- Load Supabase library first -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script> <!-- Supabase JS library -->
 
+    <!-- Your custom script should come after the library -->
     <script>
         // Initialize Supabase outside the DOMContentLoaded event listener
         const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';  // Your Supabase URL
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';  // Your anon public key
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Properly declared
 
         document.addEventListener('DOMContentLoaded', () => {
             checkCheckpoint2Progress();
@@ -57,7 +58,7 @@
 
                 const { data, error } = await supabase
                     .from('keys') // Replace with your table name
-                    .insert([{ key: randomKey, is_used: false }]);
+                    .insert([ { key: randomKey, is_used: false } ]);
 
                 if (error) {
                     console.error('Error inserting key:', error);
