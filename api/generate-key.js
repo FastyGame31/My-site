@@ -1,5 +1,7 @@
 export default function handler(req, res) {
-  // Check if the query parameter 'key' is set to 'true'
+  // Log the incoming request for debugging
+  console.log('Received request:', req.query);
+
   const { key } = req.query;
 
   // Simulate key storage (this could be replaced with a database or persistent storage if needed)
@@ -9,6 +11,7 @@ export default function handler(req, res) {
   if (!generatedKey && key === 'true') {
     // Generate the key if it hasn't been generated yet
     generatedKey = `sylphx1day-${generateRandomKey()}`;
+    console.log('Generated key:', generatedKey); // Log the generated key
   }
 
   if (generatedKey) {
@@ -16,6 +19,7 @@ export default function handler(req, res) {
     res.status(200).json({ key: generatedKey });
   } else {
     // If no key was generated, return null
+    console.log('No key generated, returning null');
     res.status(200).json({ key: null });
   }
 }
