@@ -42,34 +42,54 @@
                     return;
                 }
 
-                // Make a request to the serverless function to generate the key
-                const response = await fetch('/api/generate-key');
-                const data = await response.json();
+                // Get the user's IP address
+                const userIp = await getUserIp();
 
-                console.log('API response:', data); // Log the API response for debugging
+                // Generate a random key
+                const generatedKey = generateKey();
 
-                if (data.key) {
-                    const generatedKey = data.key;
-                    const statusLabel = document.getElementById('status-label');
-                    statusLabel.innerText = `Your generated key: ${generatedKey}`;
+                // Store the key and IP in localStorage
+                localStorage.setItem('generatedKey', generatedKey);
+                localStorage.setItem('userIp', userIp);
 
-                    // Copy the key to clipboard
-                    navigator.clipboard.writeText(generatedKey).then(() => {
-                        alert('Key copied to clipboard!');
-                    }).catch((err) => {
-                        console.error('Clipboard copy failed:', err);
-                        alert('Failed to copy key to clipboard.');
-                    });
+                console.log('Generated Key:', generatedKey);
+                console.log('User IP:', userIp);
 
-                    // Store the key in sessionStorage
-                    sessionStorage.setItem('key', generatedKey);
-                    sessionStorage.setItem('generatedKey', 'true'); // Mark that the key was generated
+                // Display the generated key
+                const statusLabel = document.getElementById('status-label');
+                statusLabel.innerText = `Your generated key: ${generatedKey}`;
 
-                    // Remove Checkpoint progress after key generation
-                    localStorage.removeItem('progress');
-                } else {
-                    alert('Failed to generate key. Please try again.');
+                // Copy the key to clipboard
+                navigator.clipboard.writeText(generatedKey).then(() => {
+                    alert('Key copied to clipboard!');
+                }).catch((err) => {
+                    console.error('Clipboard copy failed:', err);
+                    alert('Failed to copy key to clipboard.');
+                });
+
+                // Store the key in sessionStorage
+                sessionStorage.setItem('key', generatedKey);
+                sessionStorage.setItem('generatedKey', 'true'); // Mark that the key was generated
+
+                // Remove Checkpoint progress after key generation
+                localStorage.removeItem('progress');
+            }
+
+            // Function to generate a random key
+            function generateKey() {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let key = '';
+                for (let i = 0; i < 16; i++) {
+                    key += characters.charAt(Math.floor(Math.random() * characters.length));
                 }
+                return key;
+            }
+
+            // Function to get the user's IP address using a service like ipify
+            async function getUserIp() {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
             }
 
             // Check checkpoint progress
