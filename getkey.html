@@ -28,15 +28,17 @@
         // Initialize Supabase inside the DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', () => {
             const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';  // Your Supabase URL
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';  // Your anon public key
+            const supabaseKey = 'YOUR_SUPABASE_PUBLIC_KEY';  // Your anon public key
             const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Initialize here
 
-            checkCheckpoint2Progress();
+            // Check checkpoint progress
+            checkCheckpointProgress();
+
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
 
-            // Function to check if progress from Checkpoint 2 exists
-            function checkCheckpoint2Progress() {
+            // Function to check if progress exists
+            function checkCheckpointProgress() {
                 const progress = localStorage.getItem('progress');
                 if (progress !== '10') {
                     alert('You must complete Checkpoint 2 to access this page.');
@@ -44,9 +46,9 @@
                 }
             }
 
-            // Function to remove Checkpoint 2 progress
-            function removeCheckpoint2Progress() {
-                localStorage.removeItem('progress'); // Remove progress 15
+            // Function to remove Checkpoint progress
+            function removeCheckpointProgress() {
+                localStorage.removeItem('progress'); // Remove progress key
             }
 
             // Function to generate a key in Supabase
@@ -80,8 +82,8 @@
                     // Mark the session as having generated a key
                     sessionStorage.setItem('generatedKey', 'true');
 
-                    // Remove Checkpoint 2 progress
-                    removeCheckpoint2Progress();
+                    // Remove Checkpoint progress after key generation
+                    removeCheckpointProgress();
                 }
             }
 
