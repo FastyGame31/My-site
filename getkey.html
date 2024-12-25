@@ -22,9 +22,9 @@
     </main>
 
     <script>
-        // Supabase setup
+        // Supabase setup (move this to a secure server-side environment in production)
         const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaXZucmdkbGhtYWVpcWZlYmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUxMzUyOTEsImV4cCI6MjA1MDcxMTI5MX0.RmEHkeIY_DBGIoa-UkqNsr-TvxeFlFAw6ZOEOjfx8qg';
+        const supabaseKey = 'YOUR_SUPABASE_KEY';  // Do not expose this key in the client-side code
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         // Function to check if progress from Checkpoint 2 exists
