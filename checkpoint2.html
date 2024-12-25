@@ -8,70 +8,47 @@
 </head>
 <body class="checkpoint-page">
     <header class="header">
-        <h1>Sylph X</h1> <!-- Changed to normal case -->
-        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo"> <!-- Logo below the label -->
+        <h1>Sylph X</h1>
+        <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo">
     </header>
     
     <main>
         <div class="checkpoint-panel">
-            <h2>Checkpoint 2</h2> <!-- Updated to Checkpoint 2 -->
-            <p>This is the second checkpoint page. Complete the task on Linkvertise to proceed.</p>
-            <a href="https://direct-link.net/114723/sylph-x-checkpoint-3" class="btn">Proceed</a> <!-- Button with redirect -->
+            <h2>Checkpoint 2</h2>
+            <p>This is the second checkpoint page. Complete the task to proceed.</p>
+            <a href="https://www.sylphx.site" class="btn">Proceed</a> <!-- Button redirects to the website -->
         </div>
     </main>
 
     <script>
-        // Function to check if the user came from Linkvertise
-        function checkReferrer() {
-            const referrer = document.referrer.toLowerCase();
-            return referrer.includes('linkvertise.com');
-        }
-
-        // Function to check if Checkpoint 1 was completed
+        // Function to check if progress 10 exists
         function checkProgress() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            return progress.includes(1); // Ensure Checkpoint 1 is marked as completed
-        }
-
-        // Function to remove Checkpoint 1 progress
-        function removeCheckpoint1() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            const updatedProgress = progress.filter(checkpoint => checkpoint !== 1); // Remove Checkpoint 1
-            localStorage.setItem('progress', JSON.stringify(updatedProgress));
-        }
-
-        // Redirect to the main page if the user didn't come from Linkvertise or skip Checkpoint 1
-        if (!checkReferrer() || !checkProgress()) {
-            alert('You must complete Checkpoint 1 and the Linkvertise task to access this page.');
-            window.location.replace('https://www.sylphx.site'); // Redirect to main page
-        }
-
-        // Store progress in localStorage
-        function markCheckpointCompleted() {
-            const progress = JSON.parse(localStorage.getItem('progress')) || [];
-            if (!progress.includes(2)) {
-                progress.push(2); // Mark Checkpoint 2 as completed
-                localStorage.setItem('progress', JSON.stringify(progress));
+            const progress = localStorage.getItem('progress');
+            if (progress !== '10') {
+                alert('You must complete the previous checkpoint to access this page.');
+                window.location.replace('https://www.sylphx.site'); // Redirect to main page
             }
         }
+
+        // Function to update progress for the next page
+        function updateProgressForNextPage() {
+            localStorage.setItem('progress', '15'); // Set progress for the next page
+        }
+
+        // Function to remove progress 10 when "Proceed" is clicked
+        function removeOldProgress() {
+            localStorage.removeItem('progress'); // Remove current progress
+        }
+
+        // Run progress check on page load
+        checkProgress();
 
         // Add event listener to the Proceed button
         const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', function(event) {
-            // Check if the user came from Linkvertise before proceeding
-            if (checkReferrer()) {
-                markCheckpointCompleted(); // Mark Checkpoint 2 as completed
-                removeCheckpoint1(); // Remove Checkpoint 1 progress
-            } else {
-                event.preventDefault(); // Prevent navigation
-                alert('You must complete the task on Linkvertise to proceed.');
-            }
+        proceedButton.addEventListener('click', function () {
+            removeOldProgress(); // Remove progress 10
+            updateProgressForNextPage(); // Create progress 15 for the next page
         });
-
-        // Optional: Timer to redirect after 3 minutes (180000 milliseconds)
-        const redirectTimer = setTimeout(function() {
-            window.location.replace('https://www.sylphx.site'); // Force redirect after 3 minutes
-        }, 180000); // 3 minutes in milliseconds
     </script>
 </body>
 </html>
