@@ -2,12 +2,20 @@ export default function handler(req, res) {
   // Check if the query parameter 'key' is set to 'true'
   const { key } = req.query;
 
-  if (key === 'true') {
-    // If the user is requesting a key, generate and return it
-    const randomKey = `sylphx1day-${generateRandomKey()}`;
-    res.status(200).json({ key: randomKey });
+  // Simulate key storage (this could be replaced with a database or persistent storage if needed)
+  let generatedKey = null;
+
+  // Check if the key has already been generated (in-memory storage or database)
+  if (!generatedKey && key === 'true') {
+    // Generate the key if it hasn't been generated yet
+    generatedKey = `sylphx1day-${generateRandomKey()}`;
+  }
+
+  if (generatedKey) {
+    // Return the generated key
+    res.status(200).json({ key: generatedKey });
   } else {
-    // If no key request, return an empty response or a message
+    // If no key was generated, return null
     res.status(200).json({ key: null });
   }
 }
