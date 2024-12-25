@@ -21,8 +21,7 @@
     </main>
 
     <!-- Load Supabase library at the end of the body to ensure it is fully loaded before usage -->
-    
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script> <!-- Supabase JS library -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script> <!-- Supabase JS library -->
 
     <script>
         // Initialize Supabase outside the DOMContentLoaded event listener
@@ -58,7 +57,7 @@
 
                 const { data, error } = await supabase
                     .from('keys') // Replace with your table name
-                    .insert([ { key: randomKey, is_used: false } ]);
+                    .insert([{ key: randomKey, is_used: false }]);
 
                 if (error) {
                     console.error('Error inserting key:', error);
