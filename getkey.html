@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Key | Sylph X</title>
     <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- Supabase JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.10.0/dist/umd/supabase.min.js"></script> <!-- Supabase JS library -->
 </head>
 <body class="checkpoint-page">
     <header class="header">
@@ -22,10 +22,10 @@
     </main>
 
     <script>
-        // Supabase setup (move this to a secure server-side environment in production)
+        // Supabase setup
         const supabaseUrl = 'https://wpivnrgdlhmaeiqfeblb.supabase.co';
         const supabaseKey = 'YOUR_SUPABASE_KEY';  // Do not expose this key in the client-side code
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey); // Correct initialization
 
         // Function to check if progress from Checkpoint 2 exists
         function checkCheckpoint2Progress() {
