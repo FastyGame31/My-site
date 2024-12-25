@@ -30,9 +30,10 @@
             }
         }
 
-        // Remove progress when "Proceed" button is clicked
-        function removeProgress() {
-            localStorage.removeItem('progress'); // Remove progress
+        // Remove progress and create new progress when "Proceed" button is clicked
+        function updateProgress() {
+            localStorage.removeItem('progress'); // Remove old progress
+            localStorage.setItem('progress', '10'); // Set new progress
         }
 
         // Run progress check on page load
@@ -40,7 +41,7 @@
 
         // Add event listener to the Proceed button
         const proceedButton = document.querySelector('.btn');
-        proceedButton.addEventListener('click', removeProgress);
+        proceedButton.addEventListener('click', updateProgress);
     </script>
 </body>
 </html>
