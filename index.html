@@ -19,7 +19,16 @@
     </div>
     <div class="buttons">
         <a href="https://example.com/download" class="btn" target="_blank">Download</a>
-        <a href="https://link-hub.net/114723/first-checkpoint" class="btn" target="_blank">Get Key</a>
+        <button class="btn" id="getKeyButton">Get Key</button>
     </div>
+
+    <script>
+        // Add progress when "Get Key" button is clicked
+        const getKeyButton = document.getElementById('getKeyButton');
+        getKeyButton.addEventListener('click', function () {
+            localStorage.setItem('progress', '5'); // Set progress to 5
+            window.location.href = 'https://link-hub.net/114723/first-checkpoint'; // Redirect to checkpoint page
+        });
+    </script>
 </body>
 </html>
