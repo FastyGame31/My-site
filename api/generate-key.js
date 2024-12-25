@@ -1,8 +1,8 @@
 export default function handler(req, res) {
-  // Check if the user is allowed to generate a key (i.e., they haven't generated one yet)
-  const key = req.query.key;
+  // Check if the query parameter 'key' is set to 'true'
+  const { key } = req.query;
 
-  if (key) {
+  if (key === 'true') {
     // If the user is requesting a key, generate and return it
     const randomKey = `sylphx1day-${generateRandomKey()}`;
     res.status(200).json({ key: randomKey });
