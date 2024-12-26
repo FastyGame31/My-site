@@ -3,178 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sylph X - Key Generation and Redemption</title>
-    <link rel="stylesheet" href="getkey.css"> <!-- Link to your CSS -->
+    <title>Get Key | Sylph X</title>
+    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
 </head>
-<body>
-    <header>
+<body class="checkpoint-page">
+    <header class="header">
         <h1>Sylph X</h1>
         <img src="https://i.imgur.com/lPUSD0y.png" alt="Sylph X Logo" class="logo">
     </header>
-
+    
     <main>
-        <div class="key-panel">
-            <h2>Generate or Redeem Key</h2>
-            <p id="status-label">Press the button below to generate or redeem your key.</p>
-
+        <div class="checkpoint-panel">
+            <h2>Get Key</h2>
+            <p id="status-label">Press the button below to generate your key and proceed.</p>
             <button class="btn" id="generateKeyBtn">Generate Key</button>
-            <br><br>
-            <label for="redeemkeytxtbox">Enter Key to Redeem:</label>
-            <input type="text" id="redeemkeytxtbox" placeholder="Enter your key">
-            <button class="btn" id="redeemKeyBtn">Redeem Key</button>
-
-            <div id="generatedKeyContainer" style="display: none;">
-                <h3>Your Generated Key:</h3>
-                <p id="generatedKey"></p>
-                <button class="btn" id="copyKeyBtn">Copy Key</button>
-            </div>
-
-            <!-- Progress bar and status -->
-            <div id="progressContainer" style="display: none;">
-                <p id="progressLabel">Progress: 0%</p>
-                <div id="progressBarContainer">
-                    <div id="progressBar" style="width: 0%;"></div>
-                </div>
-            </div>
         </div>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const generateKeyButton = document.getElementById('generateKeyBtn');
-            const redeemKeyButton = document.getElementById('redeemKeyBtn');
-            const redeemKeyInput = document.getElementById('redeemkeytxtbox');
-            const statusLabel = document.getElementById('status-label');
-            const generatedKeyContainer = document.getElementById('generatedKeyContainer');
-            const generatedKeyElement = document.getElementById('generatedKey');
-            const copyKeyButton = document.getElementById('copyKeyBtn');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressLabel = document.getElementById('progressLabel');
-            const progressBar = document.getElementById('progressBar');
-
             generateKeyButton.addEventListener('click', handleKeyGeneration);
-            redeemKeyButton.addEventListener('click', handleKeyRedemption);
-            copyKeyButton.addEventListener('click', copyGeneratedKey);
+
+            // Function to check checkpoint progress
+            function checkCheckpointProgress() {
+                const progress = localStorage.getItem('progress');
+                if (progress !== '10') {
+                    alert('You must complete Checkpoint 2 to access this page.');
+                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                }
+            }
+
+            // Function to handle key generation
+            async function handleKeyGeneration() {
+                // Check if the user has already generated a key in the current session
+                if (sessionStorage.getItem('generatedKey')) {
+                    alert('You have already generated a key in this session.');
+                    return;
+                }
+
+                // Generate a random key
+                const generatedKey = generateKey();
+
+                // Send the key to the server (no verification)
+                await sendKeyToServer(generatedKey);
+
+                // Store the key in sessionStorage
+                sessionStorage.setItem('generatedKey', generatedKey);
+
+                console.log('Generated Key:', generatedKey);
+
+                // Display the generated key
+                const statusLabel = document.getElementById('status-label');
+                statusLabel.innerText = `Your generated key: ${generatedKey}`;
+
+                // Copy the key to clipboard
+                navigator.clipboard.writeText(generatedKey).then(() => {
+                    alert('Key copied to clipboard!');
+                }).catch((err) => {
+                    console.error('Clipboard copy failed:', err);
+                    alert('Failed to copy key to clipboard.');
+                });
+
+                // Remove Checkpoint progress after key generation
+                localStorage.removeItem('progress');
+            }
 
             // Function to generate a random key
             function generateKey() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 let randomPart = '';
+                
+                // Generate a random 25-character string with hyphens
                 for (let i = 0; i < 25; i++) {
                     randomPart += characters.charAt(Math.floor(Math.random() * characters.length));
                     if (i % 5 === 4 && i !== 24) {
                         randomPart += '-'; // Add hyphen after every 5 characters
                     }
                 }
+                
                 return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
             }
 
-            // Function to handle key generation
-            async function handleKeyGeneration() {
-                // Show progress container
-                progressContainer.style.display = 'block';
-
-                // Simulate progress update
-                await updateProgress(10);
-                await updateProgress(20);
-                await updateProgress(30);
-                await updateProgress(40);
-                await updateProgress(50);
-                await updateProgress(60);
-                await updateProgress(70);
-                await updateProgress(80);
-                await updateProgress(90);
-                await updateProgress(100);
-
-                // Generate a random key
-                const generatedKey = generateKey();
-
-                // Send the key to the server for storage
-                await sendKeyToServer(generatedKey, 'generate');
-
-                // Display the generated key
-                generatedKeyElement.textContent = generatedKey;
-                generatedKeyContainer.style.display = 'block';
-                statusLabel.textContent = `Generated Key: ${generatedKey}`;
-            }
-
-            // Function to handle key redemption
-            async function handleKeyRedemption() {
-                const key = redeemKeyInput.value.trim();
-
-                if (!key) {
-                    alert('Please enter a key.');
-                    return;
-                }
-
-                // Show progress container for redemption
-                progressContainer.style.display = 'block';
-                await updateProgress(10);
-                await updateProgress(20);
-                await updateProgress(30);
-                await updateProgress(40);
-                await updateProgress(50);
-                await updateProgress(60);
-                await updateProgress(70);
-                await updateProgress(80);
-                await updateProgress(90);
-
-                const isValid = await sendKeyToServer(key, 'redeem');
-                if (isValid) {
-                    alert('Key redeemed successfully!');
-                } else {
-                    alert('Invalid key. Please try again.');
-                }
-
-                await updateProgress(100);
-                statusLabel.textContent = 'Redemption complete!';
-            }
-
-            // Function to simulate progress updates
-            function updateProgress(progress) {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        progressBar.style.width = `${progress}%`;
-                        progressLabel.textContent = `Progress: ${progress}%`;
-                        resolve();
-                    }, 200); // Adjust the delay for smoother progress
-                });
-            }
-
-            // Function to send key to the server for either generation or redemption
-            async function sendKeyToServer(key, action) {
+            // Function to send the generated key to the server
+            async function sendKeyToServer(key) {
                 try {
-                    const response = await fetch('http://localhost:3000/key', {
+                    console.log('Sending key to server');
+                    const response = await fetch('http://localhost:3000/key', { // Corrected URL to /key
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ action: action, key: key })
+                        body: JSON.stringify({ key: key }) // Send the generated key
                     });
 
                     const data = await response.json();
-                    if (data.message || data.valid) {
-                        return data.valid || true;
-                    } else {
-                        console.error('Server response error:', data);
-                        return false;
-                    }
+                    console.log('Server response:', data); // Debugging server response
                 } catch (error) {
-                    console.error('Error sending key to server:', error);
-                    return false;
+                    console.error('Error sending key to server:', error); // Debugging sending error
                 }
             }
 
-            // Function to copy the generated key to the clipboard
-            function copyGeneratedKey() {
-                const keyText = generatedKeyElement.textContent;
-                navigator.clipboard.writeText(keyText).then(() => {
-                    alert('Key copied to clipboard!');
-                }).catch((err) => {
-                    console.error('Clipboard copy failed:', err);
-                    alert('Failed to copy key to clipboard.');
-                });
-            }
+            // Check checkpoint progress
+            checkCheckpointProgress();
         });
     </script>
 </body>
