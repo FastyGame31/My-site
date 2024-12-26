@@ -42,25 +42,20 @@
                     return;
                 }
 
-                // Get the user's IP address
-                const userIp = await getUserIp();
-
                 // Generate a random key
                 const generatedKey = generateKey();
 
-                // Send the key and IP to the server for validation
-                const isValid = await verifyKey(userIp, generatedKey);
+                // Send the key to the server for validation (without IP)
+                const isValid = await verifyKey(generatedKey);
                 if (!isValid) {
                     alert('Failed to validate the key. Please try again.');
                     return;
                 }
 
-                // Store the key and IP in sessionStorage
+                // Store the key in sessionStorage
                 sessionStorage.setItem('generatedKey', generatedKey);
-                sessionStorage.setItem('userIp', userIp);
 
                 console.log('Generated Key:', generatedKey);
-                console.log('User IP:', userIp);
 
                 // Display the generated key
                 const statusLabel = document.getElementById('status-label');
@@ -94,15 +89,8 @@
                 return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
             }
 
-            // Function to get the user's IP address using a service like ipify
-            async function getUserIp() {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            }
-
-            // Function to verify the key with the server
-            async function verifyKey(ip, key) {
+            // Function to verify the key with the server (without IP)
+            async function verifyKey(key) {
                 try {
                     console.log('Sending key verification request'); // Debugging request initiation
                     const response = await fetch('http://localhost:3000/verify-key', { // Update with your server's URL
@@ -110,7 +98,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ ip: ip, key: key })
+                        body: JSON.stringify({ key: key }) // Removed IP from the body
                     });
 
                     const data = await response.json();
