@@ -1,10 +1,7 @@
-// api/verify-key.js
-const { json } = require('micro'); // Importing micro for parsing JSON requests
-
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
     try {
-      const data = await json(req); // Parse the incoming JSON body
+      const data = req.body; // Parse the incoming JSON body
       const { ip, key } = data;
 
       // Check if both IP and key are present
@@ -14,7 +11,7 @@ module.exports = async (req, res) => {
 
       // Example validation logic
       const validKeyPrefix = 'sylphx1day-'; // Prefix used by valid keys
-      const keyRegex = /^sylphx1day-[A-Za-z0-9-]{25}$/; // Regex to validate the key format
+      const keyRegex = /^sylphx1day-[A-Za-z0-9]{5}-[A-Za-z0-9]{5}-[A-Za-z0-9]{5}-[A-Za-z0-9]{5}-[A-Za-z0-9]{5}$/; // Updated regex
 
       const isValidKey = keyRegex.test(key) && key.startsWith(validKeyPrefix);
 
