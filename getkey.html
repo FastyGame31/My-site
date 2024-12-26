@@ -25,19 +25,32 @@
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
 
+            // Function to check checkpoint progress
+            function checkCheckpointProgress() {
+                const progress = localStorage.getItem('progress');
+                console.log('Checkpoint progress:', progress); // Debugging checkpoint progress
+                if (progress !== '10') {
+                    alert('You must complete Checkpoint 2 to access this page.');
+                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                }
+            }
+
             // Function to handle key generation
             async function handleKeyGeneration() {
                 // Check if the user has already generated a key in the current session
                 if (sessionStorage.getItem('generatedKey')) {
+                    console.log('Key already generated in this session.'); // Debugging session check
                     alert('You have already generated a key in this session.');
                     return;
                 }
 
                 // Generate a random key
                 const generatedKey = generateKey();
+                console.log('Generated Key:', generatedKey); // Debugging key generation
 
                 // Send the key to the server for validation (without IP)
                 const isValid = await verifyKey(generatedKey);
+                console.log('Key validation result:', isValid); // Debugging validation result
                 if (!isValid) {
                     alert('Failed to validate the key. Please try again.');
                     return;
@@ -45,8 +58,7 @@
 
                 // Store the key in sessionStorage
                 sessionStorage.setItem('generatedKey', generatedKey);
-
-                console.log('Generated Key:', generatedKey);
+                console.log('Key stored in sessionStorage.');
 
                 // Display the generated key
                 const statusLabel = document.getElementById('status-label');
@@ -59,6 +71,10 @@
                     console.error('Clipboard copy failed:', err);
                     alert('Failed to copy key to clipboard.');
                 });
+
+                // Remove Checkpoint progress after key generation
+                localStorage.removeItem('progress');
+                console.log('Checkpoint progress removed from localStorage.');
             }
 
             // Function to generate a random key
@@ -86,17 +102,22 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ key: key }) // Send the key for validation
+                        body: JSON.stringify({ key: key }) // Removed IP from the body
                     });
 
                     const data = await response.json();
                     console.log('Server response:', data); // Debugging server response
+                    console.log('Server response success:', data.success); // Log success value
+                    console.log('Server response message:', data.message); // Log message from the server
                     return data.success;
                 } catch (error) {
                     console.error('Error verifying key:', error); // Debugging verification error
                     return false;
                 }
             }
+
+            // Check checkpoint progress
+            checkCheckpointProgress();
         });
     </script>
 </body>
