@@ -89,7 +89,7 @@
 async function sendKeyToServer(key) {
     try {
         console.log('Sending key to server');
-        const response = await fetch('https://server-2s6a.onrender.com/key', { // Use Render server URL
+        const response = await fetch('http://localhost:3000/key', { // Corrected URL to /key
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,7 +106,6 @@ async function sendKeyToServer(key) {
         console.error('Error sending key to server:', error); // Debugging sending error
     }
 }
-
             // Check checkpoint progress
             checkCheckpointProgress();
         });
