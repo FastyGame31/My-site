@@ -86,23 +86,26 @@
             }
 
             // Function to send the generated key to the server
-            async function sendKeyToServer(key) {
-                try {
-                    console.log('Sending key to server');
-                    const response = await fetch('http://localhost:3000/key', { // Corrected URL to /key
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ key: key }) // Send the generated key
-                    });
+async function sendKeyToServer(key) {
+    try {
+        console.log('Sending key to server');
+        const response = await fetch('http://localhost:3000/key', { // Corrected URL to /key
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                action: 'generate', // Add action field for key generation
+                key: key 
+            }) // Send the generated key
+        });
 
-                    const data = await response.json();
-                    console.log('Server response:', data); // Debugging server response
-                } catch (error) {
-                    console.error('Error sending key to server:', error); // Debugging sending error
-                }
-            }
+        const data = await response.json();
+        console.log('Server response:', data); // Debugging server response
+    } catch (error) {
+        console.error('Error sending key to server:', error); // Debugging sending error
+    }
+}
 
             // Check checkpoint progress
             checkCheckpointProgress();
