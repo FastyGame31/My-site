@@ -89,7 +89,7 @@
             async function sendKeyToServer(key) {
                 try {
                     console.log('Sending key to server');
-                    const response = await fetch('http://localhost:3000/store-key', { // Corrected URL
+                    const response = await fetch('http://localhost:3000/generated-keys', { // Corrected URL
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
