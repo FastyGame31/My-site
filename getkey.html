@@ -45,12 +45,8 @@
                 // Generate a random key
                 const generatedKey = generateKey();
 
-                // Send the key to the server for validation (without IP)
-                const isValid = await verifyKey(generatedKey);
-                if (!isValid) {
-                    alert('Failed to validate the key. Please try again.');
-                    return;
-                }
+                // Send the key to the server (no verification)
+                await sendKeyToServer(generatedKey);
 
                 // Store the key in sessionStorage
                 sessionStorage.setItem('generatedKey', generatedKey);
@@ -89,26 +85,23 @@
                 return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
             }
 
-            // Function to verify the key with the server (without IP)
-            async function verifyKey(key) {
+            // Function to send the generated key to the server (no verification)
+            async function sendKeyToServer(key) {
                 try {
-                    console.log('Sending key verification request'); // Debugging request initiation
-                    const response = await fetch('http://localhost:3000/verify-key', { // Update with your server's URL
+                    console.log('Sending key to server'); // Debugging request initiation
+                    const response = await fetch('http://localhost:3000/save-key', { // Update with your server's URL
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ key: key }) // Removed IP from the body
+                        body: JSON.stringify({ key: key }) // Send the generated key
                     });
 
                     const data = await response.json();
                     console.log('Server response:', data); // Debugging server response
-                    console.log('Server response success:', data.success); // Log success value
-                    console.log('Server response message:', data.message); // Log message from the server
-                    return data.success;
+                    // You can handle the server response if needed
                 } catch (error) {
-                    console.error('Error verifying key:', error); // Debugging verification error
-                    return false;
+                    console.error('Error sending key to server:', error); // Debugging sending error
                 }
             }
 
