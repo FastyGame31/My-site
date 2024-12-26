@@ -85,11 +85,11 @@
                 return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
             }
 
-            // Function to send the generated key to the server (no verification)
+            // Function to send the generated key to the server
             async function sendKeyToServer(key) {
                 try {
-                    console.log('Sending key to server'); // Debugging request initiation
-                    const response = await fetch('http://localhost:3000/save-key', { // Update with your server's URL
+                    console.log('Sending key to server');
+                    const response = await fetch('http://localhost:3000/store-key', { // Corrected URL
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -99,7 +99,6 @@
 
                     const data = await response.json();
                     console.log('Server response:', data); // Debugging server response
-                    // You can handle the server response if needed
                 } catch (error) {
                     console.error('Error sending key to server:', error); // Debugging sending error
                 }
