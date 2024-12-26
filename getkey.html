@@ -25,15 +25,6 @@
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
 
-            // Function to check checkpoint progress
-            function checkCheckpointProgress() {
-                const progress = localStorage.getItem('progress');
-                if (progress !== '10') {
-                    alert('You must complete Checkpoint 2 to access this page.');
-                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
-                }
-            }
-
             // Function to handle key generation
             async function handleKeyGeneration() {
                 // Check if the user has already generated a key in the current session
@@ -68,9 +59,6 @@
                     console.error('Clipboard copy failed:', err);
                     alert('Failed to copy key to clipboard.');
                 });
-
-                // Remove Checkpoint progress after key generation
-                localStorage.removeItem('progress');
             }
 
             // Function to generate a random key
@@ -98,22 +86,17 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ key: key }) // Removed IP from the body
+                        body: JSON.stringify({ key: key }) // Send the key for validation
                     });
 
                     const data = await response.json();
                     console.log('Server response:', data); // Debugging server response
-                    console.log('Server response success:', data.success); // Log success value
-                    console.log('Server response message:', data.message); // Log message from the server
                     return data.success;
                 } catch (error) {
                     console.error('Error verifying key:', error); // Debugging verification error
                     return false;
                 }
             }
-
-            // Check checkpoint progress
-            checkCheckpointProgress();
         });
     </script>
 </body>
