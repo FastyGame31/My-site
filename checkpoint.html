@@ -30,14 +30,24 @@
             }
         }
 
+        // Check if the page was opened from linkvertise.com
+        function checkReferrer() {
+            const referrer = document.referrer;
+            if (!referrer.includes("linkvertise.com")) {
+                alert("You haven't completed Linkvertise tasks.");
+                window.location.replace('https://www.sylphx.site'); // Redirect to main page
+            }
+        }
+
         // Remove progress and create new progress when "Proceed" button is clicked
         function updateProgress() {
             localStorage.removeItem('progress'); // Remove old progress
             localStorage.setItem('progress', '10'); // Set new progress
         }
 
-        // Run progress check on page load
+        // Run checks on page load
         checkProgress();
+        checkReferrer();
 
         // Add event listener to the Proceed button
         const proceedButton = document.querySelector('.btn');
