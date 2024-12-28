@@ -9,7 +9,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #000;
     color: #fff;
-    overflow: hidden;
+    overflow-y: scroll; /* Allow vertical scrolling */
 }
 
 /* Animations */
@@ -105,10 +105,11 @@ body {
     margin-top: 40px;
     animation: fadeIn 2.5s ease-in-out;
     text-align: center;
+    padding: 20px; /* Add padding to avoid touching the edges */
 }
 
 .info-box {
-    background-color: #333;
+    background-color: rgba(51, 51, 51, 0.8); /* Semi-transparent background */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
