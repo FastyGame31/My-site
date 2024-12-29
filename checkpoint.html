@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkpoint</title>
-    <link rel="stylesheet" href="checkpoint.css"> <!-- Link to the checkpoint CSS -->
+    
+    <meta property="og:title" content="Sylph X">
+    <meta property="og:description" content="Sylph X is a powerful tool designed for executing scripts with ease. It offers a stable and user-friendly interface, multiple APIs for script compatibility, and strong performance to ensure a seamless experience. Whether you're a beginner or advanced user, Sylph X provides everything you need for smooth script execution.">
+    <meta property="og:image" content="https://i.imgur.com/lPUSD0y.png"> 
+    <meta property="og:url" content="https://sylphx.site/checkpoint"> 
+    
+    <link rel="icon" href="https://i.imgur.com/lPUSD0y.png" type="image/png">
+
+    <link rel="stylesheet" href="checkpoint.css"> 
 </head>
 <body class="checkpoint-page">
     <header class="header">
@@ -21,35 +29,30 @@
     </main>
 
     <script>
-        // Check if progress exists in localStorage
         function checkProgress() {
             const progress = localStorage.getItem('progress');
             if (progress !== '5') {
                 alert('You must start from the main page to access this checkpoint.');
-                window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                window.location.replace('https://www.sylphx.site');
             }
         }
 
-        // Check if the page was opened from linkvertise.com
         function checkReferrer() {
             const referrer = document.referrer;
             if (!referrer.includes("linkvertise.com")) {
                 alert("You haven't completed Linkvertise tasks.");
-                window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                window.location.replace('https://www.sylphx.site'); 
             }
         }
 
-        // Remove progress and create new progress when "Proceed" button is clicked
         function updateProgress() {
-            localStorage.removeItem('progress'); // Remove old progress
-            localStorage.setItem('progress', '10'); // Set new progress
+            localStorage.removeItem('progress'); 
+            localStorage.setItem('progress', '10'); 
         }
 
-        // Run checks on page load
         checkProgress();
         checkReferrer();
 
-        // Add event listener to the Proceed button
         const proceedButton = document.querySelector('.btn');
         proceedButton.addEventListener('click', updateProgress);
     </script>
