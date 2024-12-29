@@ -41,13 +41,13 @@
                 }
             }
 
-            function checkReferrer() {
-                const referrer = document.referrer;
-                if (!referrer.includes("linkvertise.com")) {
-                    alert("You haven't completed Linkvertise tasks.");
-                    window.location.replace('https://www.sylphx.site'); 
-                }
-            }
+function checkReferrer() {
+    const referrer = document.referrer;
+    if (!(referrer.includes("work.ink") || referrer.includes("workink.net"))) {
+        alert("You haven't completed the required workink tasks.");
+        window.location.replace('https://www.sylphx.site'); 
+    }
+}
 
             async function handleKeyGeneration() {
                 if (sessionStorage.getItem('generatedKey')) {
