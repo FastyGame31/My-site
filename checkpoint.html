@@ -23,8 +23,8 @@
     <main>
         <div class="checkpoint-panel">
             <h2>Checkpoint 1</h2>
-            <p>This is the checkpoint page. Complete the task on Linkvertise to proceed.</p>
-            <a href="https://link-hub.net/114723/sylph-x-checkpoint-2" class="btn">Proceed</a>
+            <p>This is the checkpoint page. Complete the task on Work.ink to proceed.</p>
+            <a href="https://workink.net/1XyL/lastcheckpoint" class="btn">Proceed</a>
         </div>
     </main>
 
@@ -37,13 +37,13 @@
             }
         }
 
-        function checkReferrer() {
-            const referrer = document.referrer;
-            if (!referrer.includes("linkvertise.com")) {
-                alert("You haven't completed Linkvertise tasks.");
-                window.location.replace('https://www.sylphx.site'); 
-            }
-        }
+      function checkReferrer() {
+    const referrer = document.referrer;
+    if (!(referrer.includes("work.ink") || referrer.includes("workink.net"))) {
+        alert("You haven't completed the Work.ink tasks.");
+        window.location.replace('https://www.sylphx.site'); 
+    }
+}
 
         function updateProgress() {
             localStorage.removeItem('progress'); 
