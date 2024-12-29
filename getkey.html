@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Key | Sylph X</title>
-    <link rel="stylesheet" href="getkey.css"> <!-- Link to the getkey CSS -->
+    
+    <meta property="og:title" content="Get Key | Sylph X">
+    <meta property="og:description" content="Generate your key for Sylph X and proceed with the next steps. The tool provides a smooth scripting experience with powerful features and multiple APIs.">
+    <meta property="og:image" content="https://i.imgur.com/lPUSD0y.png"> 
+    <meta property="og:url" content="https://yourwebsite.com/get-key"> 
+    
+    <link rel="icon" href="https://i.imgur.com/lPUSD0y.png" type="image/png">
+
+    <link rel="stylesheet" href="getkey.css"> 
 </head>
 <body class="checkpoint-page">
     <header class="header">
@@ -25,48 +33,39 @@
             const generateKeyButton = document.getElementById('generateKeyBtn');
             generateKeyButton.addEventListener('click', handleKeyGeneration);
 
-            // Function to check checkpoint progress
             function checkCheckpointProgress() {
                 const progress = localStorage.getItem('progress');
                 if (progress !== '10') {
                     alert('You must complete Checkpoint 2 to access this page.');
-                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                    window.location.replace('https://www.sylphx.site'); 
                 }
             }
 
-            // Check if the page was opened from linkvertise.com
             function checkReferrer() {
                 const referrer = document.referrer;
                 if (!referrer.includes("linkvertise.com")) {
                     alert("You haven't completed Linkvertise tasks.");
-                    window.location.replace('https://www.sylphx.site'); // Redirect to main page
+                    window.location.replace('https://www.sylphx.site'); 
                 }
             }
 
-            // Function to handle key generation
             async function handleKeyGeneration() {
-                // Check if the user has already generated a key in the current session
                 if (sessionStorage.getItem('generatedKey')) {
                     alert('You have already generated a key in this session.');
                     return;
                 }
 
-                // Generate a random key
                 const generatedKey = generateKey();
 
-                // Send the key to the server (no verification)
                 await sendKeyToServer(generatedKey);
 
-                // Store the key in sessionStorage
                 sessionStorage.setItem('generatedKey', generatedKey);
 
                 console.log('Generated Key:', generatedKey);
 
-                // Display the generated key
                 const statusLabel = document.getElementById('status-label');
                 statusLabel.innerText = `Your generated key: ${generatedKey}`;
 
-                // Copy the key to clipboard
                 navigator.clipboard.writeText(generatedKey).then(() => {
                     alert('Key copied to clipboard!');
                 }).catch((err) => {
@@ -74,49 +73,44 @@
                     alert('Failed to copy key to clipboard.');
                 });
 
-                // Remove Checkpoint progress after key generation
                 localStorage.removeItem('progress');
             }
 
-            // Function to generate a random key
             function generateKey() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 let randomPart = '';
                 
-                // Generate a random 25-character string with hyphens
                 for (let i = 0; i < 25; i++) {
                     randomPart += characters.charAt(Math.floor(Math.random() * characters.length));
                     if (i % 5 === 4 && i !== 24) {
-                        randomPart += '-'; // Add hyphen after every 5 characters
+                        randomPart += '-'; 
                     }
                 }
                 
-                return `sylphx1day-${randomPart}`; // Prepend 'sylphx1day-' to the random string
+                return `sylphx1day-${randomPart}`; 
             }
 
-            // Function to send the generated key to the server
             async function sendKeyToServer(key) {
                 try {
                     console.log('Sending key to server');
-                    const response = await fetch('http://localhost:3000/key', { // Corrected URL to /key
+                    const response = await fetch('http://localhost:3000/key', { 
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ 
-                            action: 'generate', // Add action field for key generation
+                            action: 'generate', 
                             key: key 
-                        }) // Send the generated key
+                        }) 
                     });
 
                     const data = await response.json();
-                    console.log('Server response:', data); // Debugging server response
+                    console.log('Server response:', data); 
                 } catch (error) {
-                    console.error('Error sending key to server:', error); // Debugging sending error
+                    console.error('Error sending key to server:', error); 
                 }
             }
 
-            // Check checkpoint progress and referrer
             checkCheckpointProgress();
             checkReferrer();
         });
